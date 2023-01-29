@@ -8,7 +8,8 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use: "todoist",
+	Use:  "todoist",
+	Long: "CLI Client for Todoist.",
 }
 
 func Execute() {

@@ -9,7 +9,9 @@ import (
 )
 
 var configureCmd = &cobra.Command{
-	Use: "configure",
+	Use:   "configure",
+	Short: "Configure CLI settings",
+	Long:  "Configure CLI settings.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if apiToken == "" {
 			fmt.Print("API Token: ")

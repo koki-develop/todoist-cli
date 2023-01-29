@@ -16,11 +16,15 @@ var (
 )
 
 var projectsCmd = &cobra.Command{
-	Use: "projects",
+	Use:   "projects",
+	Short: "Manage projects",
+	Long:  "Manage projects.",
 }
 
 var projectsListCmd = &cobra.Command{
-	Use: "list",
+	Use:   "list",
+	Short: "List all projects",
+	Long:  "List all projects.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := loadConfig()
 		if err != nil {
@@ -45,8 +49,10 @@ var projectsListCmd = &cobra.Command{
 }
 
 var projectsGetCmd = &cobra.Command{
-	Use:  "get <PROJECT_ID>",
-	Args: cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	Use:   "get <PROJECT_ID>",
+	Short: "Get a project",
+	Long:  "Get a project.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
@@ -73,8 +79,10 @@ var projectsGetCmd = &cobra.Command{
 }
 
 var projectsCreateCmd = &cobra.Command{
-	Use:  "create <PROJECT_NAME>",
-	Args: cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	Use:   "create <PROJECT_NAME>",
+	Short: "Create a project",
+	Long:  "Create a project.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		name := args[0]
 
@@ -112,8 +120,10 @@ var projectsCreateCmd = &cobra.Command{
 }
 
 var projectsUpdateCmd = &cobra.Command{
-	Use:  "update <PROJECT_ID>",
-	Args: cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	Use:   "update <PROJECT_ID>",
+	Short: "Update a project",
+	Long:  "Update a project.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
@@ -151,8 +161,10 @@ var projectsUpdateCmd = &cobra.Command{
 }
 
 var projectsDeleteCmd = &cobra.Command{
-	Use:  "delete <PROJECT_ID>",
-	Args: cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	Use:   "delete <PROJECT_ID>",
+	Short: "Delete a project",
+	Long:  "Delete a project.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
