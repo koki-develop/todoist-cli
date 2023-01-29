@@ -8,7 +8,7 @@ import (
 )
 
 func (cl *Client) ListProjects() (models.Projects, error) {
-	req, err := cl.newRequest(http.MethodGet, "projects", nil)
+	req, err := cl.newRequest(http.MethodGet, "projects", nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +22,7 @@ func (cl *Client) ListProjects() (models.Projects, error) {
 }
 
 func (cl *Client) GetProject(id string) (*models.Project, error) {
-	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("projects/%s", id), nil)
+	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("projects/%s", id), nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ type CreateProjectParameters struct {
 }
 
 func (cl *Client) CreateProject(p *CreateProjectParameters) (*models.Project, error) {
-	req, err := cl.newRequest(http.MethodPost, "projects", p)
+	req, err := cl.newRequest(http.MethodPost, "projects", nil, p)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ type UpdateProjectParameters struct {
 }
 
 func (cl *Client) UpdateProject(id string, p *UpdateProjectParameters) (*models.Project, error) {
-	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("projects/%s", id), p)
+	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("projects/%s", id), nil, p)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (cl *Client) UpdateProject(id string, p *UpdateProjectParameters) (*models.
 }
 
 func (cl *Client) DeleteProject(id string) error {
-	req, err := cl.newRequest(http.MethodDelete, fmt.Sprintf("projects/%s", id), nil)
+	req, err := cl.newRequest(http.MethodDelete, fmt.Sprintf("projects/%s", id), nil, nil)
 	if err != nil {
 		return err
 	}

@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+
+	"github.com/google/go-querystring/query"
 )
 
 type Client struct {
@@ -27,9 +29,16 @@ func New(cfg *Config) *Client {
 	}
 }
 
-func (cl *Client) newRequest(method, pathname string, body interface{}) (*http.Request, error) {
+func (cl *Client) newRequest(method, pathname string, params, body interface{}) (*http.Request, error) {
 	u := &url.URL{Scheme: "https", Path: "api.todoist.com/rest/v2"}
 	u.Path = path.Join(u.Path, pathname)
+	if params != nil {
+		v, err := query.Values(params)
+		if err != nil {
+			return nil, err
+		}
+		u.RawQuery = v.Encode()
+	}
 
 	var p io.Reader = nil
 	if body != nil {

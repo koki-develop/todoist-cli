@@ -63,6 +63,17 @@ var (
 	}
 )
 
+// flags for sections
+var (
+	// --project-id
+	flagSectionProjectID = &flags.String{
+		Flag: &flags.Flag{
+			Name:        "project-id",
+			Description: "filter sections by project id",
+		},
+	}
+)
+
 func init() {
 	// --api-token
 	flagAPIToken.Add(
@@ -73,6 +84,8 @@ func init() {
 		projectsCreateCmd,
 		projectsUpdateCmd,
 		projectsDeleteCmd,
+		// sections
+		sectionsListCmd,
 	)
 
 	// -f, --format
@@ -82,6 +95,8 @@ func init() {
 		projectsGetCmd,
 		projectsCreateCmd,
 		projectsUpdateCmd,
+		// sections
+		sectionsListCmd,
 	)
 
 	/*
@@ -108,5 +123,12 @@ func init() {
 	// --name
 	flagProjectName.Add(
 		projectsUpdateCmd,
+	)
+
+	/*
+	 * sections
+	 */
+	flagSectionProjectID.Add(
+		sectionsListCmd,
 	)
 }
