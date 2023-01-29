@@ -24,7 +24,6 @@ var (
 			ShortName:   "f",
 			Description: fmt.Sprintf("output format (%s)", strings.Join(renderer.Formats, "|")),
 		},
-		Default: string(renderer.FormatTable),
 	}
 )
 
@@ -90,6 +89,7 @@ func init() {
 
 	// -f, --format
 	flagFormat.Add(
+		configureCmd,
 		// projects
 		projectsListCmd,
 		projectsGetCmd,

@@ -20,7 +20,7 @@ func load(cmd *cobra.Command) error {
 
 	config = cfg
 	client = todoistapi.New(&todoistapi.Config{Token: config.APIToken})
-	rdr = renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
+	rdr = renderer.New(renderer.Format(config.Format))
 
 	return nil
 }

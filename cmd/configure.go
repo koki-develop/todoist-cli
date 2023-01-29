@@ -4,30 +4,40 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
+	"github.com/koki-develop/todoist-cli/pkg/renderer"
 	"github.com/spf13/cobra"
 )
+
+func read(txt string) string {
+	fmt.Printf("%s: ", txt)
+	var in string
+	fmt.Scanf("%s", &in)
+	return in
+}
 
 var configureCmd = &cobra.Command{
 	Use:   "configure",
 	Short: "Configure CLI settings",
 	Long:  "Configure CLI settings.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		tkn := flagAPIToken.Get(cmd, true)
-		if tkn == nil {
-			var t string
-			fmt.Print("API Token: ")
-			fmt.Scanf("%s", &t)
-			if t != "" {
-				tkn = &t
-			}
-		}
-		if tkn == nil {
-			fmt.Println("Canceled.")
-			return nil
+		cfg := &Config{}
+		if tkn := flagAPIToken.Get(cmd, true); tkn != nil {
+			cfg.APIToken = *tkn
+		} else {
+			tkn := read("API Token")
+			cfg.APIToken = tkn
 		}
 
-		j, err := json.Marshal(&Config{APIToken: *tkn})
+		if f := flagFormat.Get(cmd, true); f != nil {
+			cfg.Format = *f
+		} else {
+			f := read(fmt.Sprintf("Default Output Format (optional) (%s)", strings.Join(renderer.Formats, "|")))
+			cfg.Format = f
+		}
+
+		j, err := json.Marshal(cfg)
 		if err != nil {
 			return err
 		}

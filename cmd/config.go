@@ -11,6 +11,7 @@ import (
 
 type Config struct {
 	APIToken string `json:"api_token"`
+	Format   string `json:"format,omitempty"`
 }
 
 var (
@@ -37,6 +38,13 @@ func loadConfig(cmd *cobra.Command) (*Config, error) {
 
 	if tkn := flagAPIToken.Get(cmd, true); tkn != nil {
 		cfg.APIToken = *tkn
+	}
+
+	if f := flagFormat.Get(cmd, true); f != nil {
+		cfg.Format = *f
+	}
+	if cfg.Format == "" {
+		cfg.Format = "table"
 	}
 
 	return &cfg, nil
