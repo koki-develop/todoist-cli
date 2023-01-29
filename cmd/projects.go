@@ -86,14 +86,14 @@ var projectsCreateCmd = &cobra.Command{
 		cl := rest.New(&rest.Config{Token: cfg.APIToken})
 		rdr := renderer.New(renderer.Format(format))
 
-		p := &rest.CreateProjectPayload{
-			Name:       name,
-			IsFavorite: &projectIsFavorite,
-		}
-		if projectParentID != "" {
+		p := &rest.CreateProjectPayload{Name: name}
+		if cmd.Flag("parent-id").Changed {
 			p.ParentID = &projectParentID
 		}
-		if projectColor != "" {
+		if cmd.Flag("favorite").Changed {
+			p.IsFavorite = &projectIsFavorite
+		}
+		if cmd.Flag("color").Changed {
 			p.Color = &projectColor
 		}
 
@@ -126,10 +126,10 @@ var projectsUpdateCmd = &cobra.Command{
 		rdr := renderer.New(renderer.Format(format))
 
 		p := &rest.UpdateProjectPayload{}
-		if projectName != "" {
+		if cmd.Flag("name").Changed {
 			p.Name = &projectName
 		}
-		if projectColor != "" {
+		if cmd.Flag("color").Changed {
 			p.Color = &projectColor
 		}
 		if cmd.Flag("favorite").Changed {
