@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/koki-develop/todoist/pkg/models"
@@ -18,4 +19,18 @@ func (cl *Client) ListProjects() (models.Projects, error) {
 	}
 
 	return projs, nil
+}
+
+func (cl *Client) GetProject(id string) (*models.Project, error) {
+	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("projects/%s", id), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var proj models.Project
+	if err := cl.doRequest(req, &proj); err != nil {
+		return nil, err
+	}
+
+	return &proj, nil
 }
