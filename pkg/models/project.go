@@ -6,7 +6,8 @@ import (
 )
 
 var (
-	_ renderer.Formattable = (*Projects)(nil)
+	_ renderer.Formattable = (*Project)(nil)
+	_ renderer.Formattable = (Projects)(nil)
 )
 
 type Project struct {
@@ -26,13 +27,34 @@ type Project struct {
 
 type Projects []*Project
 
-func (projs Projects) Table() string {
-	t := table.NewWriter()
+var projectHeader table.Row = table.Row{"PROJECT_ID", "NAME", "STYLE"}
 
-	t.AppendHeader(table.Row{"PROJECT_ID", "NAME", "STYLE"})
+func (proj *Project) tableRow() table.Row {
+	return table.Row{*proj.ID, *proj.Name, *proj.ViewStyle}
+}
+
+func (projs Projects) tableRows() []table.Row {
+	rows := []table.Row{}
 	for _, proj := range projs {
-		t.AppendRow(table.Row{*proj.ID, *proj.Name, *proj.ViewStyle})
+		rows = append(rows, proj.tableRow())
 	}
+	return rows
+}
 
+func newProjectsTableWriter() table.Writer {
+	t := table.NewWriter()
+	t.AppendHeader(projectHeader)
+	return t
+}
+
+func (proj *Project) Table() string {
+	t := newProjectsTableWriter()
+	t.AppendRow(proj.tableRow())
+	return t.Render()
+}
+
+func (projs Projects) Table() string {
+	t := newProjectsTableWriter()
+	t.AppendRows(projs.tableRows())
 	return t.Render()
 }
