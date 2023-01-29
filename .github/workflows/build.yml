@@ -14,6 +14,8 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
+      - name: test
+        run: go test ./...
       - uses: goreleaser/goreleaser-action@v4
         with:
           args: release --rm-dist --snapshot
