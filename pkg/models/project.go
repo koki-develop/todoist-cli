@@ -27,14 +27,14 @@ type Project struct {
 
 type Projects []*Project
 
-var projectTableHeader table.Row = table.Row{"ID", "NAME", "VIEW_STYLE"}
+var projectTableHeader table.Row = table.Row{"ID", "NAME", "VIEW_STYLE", "URL"}
 
 func (*Project) TableHeader() table.Row {
 	return projectTableHeader
 }
 
 func (proj *Project) TableRows() []table.Row {
-	return []table.Row{{*proj.ID, *proj.Name, *proj.ViewStyle}}
+	return []table.Row{{*proj.ID, *proj.Name, *proj.ViewStyle, *proj.URL}}
 }
 
 func (Projects) TableHeader() table.Row {
