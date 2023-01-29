@@ -26,13 +26,13 @@ var projectsListCmd = &cobra.Command{
 	Short: "List all projects",
 	Long:  "List all projects.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cfg, err := loadConfig()
+		cfg, err := loadConfig(cmd)
 		if err != nil {
 			return ErrLoadConfig
 		}
 
 		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(format))
+		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd)))
 
 		projs, err := cl.ListProjects()
 		if err != nil {
@@ -56,13 +56,13 @@ var projectsGetCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
-		cfg, err := loadConfig()
+		cfg, err := loadConfig(cmd)
 		if err != nil {
 			return ErrLoadConfig
 		}
 
 		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(format))
+		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd)))
 
 		proj, err := cl.GetProject(id)
 		if err != nil {
@@ -86,13 +86,13 @@ var projectsCreateCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		name := args[0]
 
-		cfg, err := loadConfig()
+		cfg, err := loadConfig(cmd)
 		if err != nil {
 			return ErrLoadConfig
 		}
 
 		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(format))
+		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd)))
 
 		p := &todoistapi.CreateProjectPayload{Name: name}
 		if cmd.Flag("parent-id").Changed {
@@ -127,13 +127,13 @@ var projectsUpdateCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
-		cfg, err := loadConfig()
+		cfg, err := loadConfig(cmd)
 		if err != nil {
 			return ErrLoadConfig
 		}
 
 		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(format))
+		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd)))
 
 		p := &todoistapi.UpdateProjectPayload{}
 		if cmd.Flag("name").Changed {
@@ -168,7 +168,7 @@ var projectsDeleteCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
-		cfg, err := loadConfig()
+		cfg, err := loadConfig(cmd)
 		if err != nil {
 			return ErrLoadConfig
 		}

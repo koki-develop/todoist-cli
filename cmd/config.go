@@ -5,6 +5,8 @@ import (
 	"errors"
 	"os"
 	"path"
+
+	"github.com/spf13/cobra"
 )
 
 type Config struct {
@@ -15,7 +17,7 @@ var (
 	ErrLoadConfig = errors.New("failed to load config")
 )
 
-func loadConfig() (*Config, error) {
+func loadConfig(cmd *cobra.Command) (*Config, error) {
 	dir, err := configDir()
 	if err != nil {
 		return nil, err
@@ -33,8 +35,8 @@ func loadConfig() (*Config, error) {
 		return nil, err
 	}
 
-	if apiToken != "" {
-		cfg.APIToken = apiToken
+	if tkn := flagAPIToken.Get(cmd); tkn != nil {
+		cfg.APIToken = *tkn
 	}
 
 	return &cfg, nil

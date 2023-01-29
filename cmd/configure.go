@@ -13,16 +13,21 @@ var configureCmd = &cobra.Command{
 	Short: "Configure CLI settings",
 	Long:  "Configure CLI settings.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if apiToken == "" {
+		if flagAPIToken.Get(cmd) == nil {
+			var tkn string
 			fmt.Print("API Token: ")
-			fmt.Scanf("%s", &apiToken)
+			fmt.Scanf("%s", &tkn)
+			if tkn != "" {
+				flagAPIToken.Set(tkn)
+			}
 		}
-		if apiToken == "" {
+		tkn := flagAPIToken.Get(cmd)
+		if tkn == nil {
 			fmt.Println("Canceled.")
 			return nil
 		}
 
-		j, err := json.Marshal(&Config{APIToken: apiToken})
+		j, err := json.Marshal(&Config{APIToken: *tkn})
 		if err != nil {
 			return err
 		}
