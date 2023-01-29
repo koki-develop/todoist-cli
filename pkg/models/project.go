@@ -27,7 +27,7 @@ type Project struct {
 
 type Projects []*Project
 
-var projectTableHeader table.Row = table.Row{"PROJECT_ID", "NAME", "STYLE"}
+var projectTableHeader table.Row = table.Row{"ID", "NAME", "VIEW_STYLE"}
 
 func (*Project) TableHeader() table.Row {
 	return projectTableHeader
