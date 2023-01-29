@@ -5,6 +5,7 @@ import (
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/koki-develop/todoist/pkg/renderer"
+	"gopkg.in/yaml.v3"
 )
 
 var (
@@ -63,6 +64,14 @@ func (proj *Project) JSON() (string, error) {
 	return string(j), nil
 }
 
+func (proj *Project) YAML() (string, error) {
+	y, err := yaml.Marshal(proj)
+	if err != nil {
+		return "", err
+	}
+	return string(y), nil
+}
+
 func (projs Projects) Table() (string, error) {
 	t := newProjectsTableWriter()
 	t.AppendRows(projs.tableRows())
@@ -75,4 +84,12 @@ func (projs Projects) JSON() (string, error) {
 		return "", err
 	}
 	return string(j), nil
+}
+
+func (projs Projects) YAML() (string, error) {
+	y, err := yaml.Marshal(projs)
+	if err != nil {
+		return "", err
+	}
+	return string(y), nil
 }
