@@ -3,8 +3,13 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"runtime/debug"
 
 	"github.com/spf13/cobra"
+)
+
+var (
+	version string
 )
 
 var rootCmd = &cobra.Command{
@@ -20,4 +25,14 @@ func Execute() {
 		}
 		os.Exit(1)
 	}
+}
+
+func init() {
+	if version == "" {
+		if info, ok := debug.ReadBuildInfo(); ok {
+			version = info.Main.Version
+		}
+	}
+
+	rootCmd.Version = version
 }
