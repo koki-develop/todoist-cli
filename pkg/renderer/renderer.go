@@ -1,6 +1,12 @@
 package renderer
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/jedib0t/go-pretty/v6/table"
+	"gopkg.in/yaml.v3"
+)
 
 type Renderer struct {
 	format Format
@@ -15,9 +21,8 @@ const (
 )
 
 type Formattable interface {
-	Table() (string, error)
-	JSON() (string, error)
-	YAML() (string, error)
+	TableHeader() table.Row
+	TableRows() []table.Row
 }
 
 func New(f Format) *Renderer {
@@ -27,12 +32,35 @@ func New(f Format) *Renderer {
 func (r *Renderer) Render(f Formattable) (string, error) {
 	switch r.format {
 	case FormatTable:
-		return f.Table()
+		return r.renderTable(f)
 	case FormatJSON:
-		return f.JSON()
+		return r.renderJSON(f)
 	case FormatYAML:
-		return f.YAML()
+		return r.renderYAML(f)
 	default:
 		return "", fmt.Errorf("unsupported format: %s", r.format)
 	}
+}
+
+func (r *Renderer) renderTable(f Formattable) (string, error) {
+	t := table.NewWriter()
+	t.AppendHeader(f.TableHeader())
+	t.AppendRows(f.TableRows())
+	return t.Render(), nil
+}
+
+func (r *Renderer) renderJSON(f Formattable) (string, error) {
+	j, err := json.MarshalIndent(f, "", "  ")
+	if err != nil {
+		return "", err
+	}
+	return string(j), nil
+}
+
+func (r *Renderer) renderYAML(f Formattable) (string, error) {
+	y, err := yaml.Marshal(f)
+	if err != nil {
+		return "", err
+	}
+	return string(y), nil
 }
