@@ -7,25 +7,30 @@
 
 todoist-cli is an unofficial CLI client for Todoist.
 
-# Installation
+- [Installation](#installation)
+  - [Homebrew](#homebrew)
+  - [go install](#go-install)
+  - [Release](#release)
+- [LICENSE](#license)
 
-## Homebrew
+## Installation
+
+### Homebrew
 
 ```sh
 $ brew install koki-develop/tap/todoist-cli
 ```
 
-## go install
+### go install
 
 ```sh
 $ go install github.com/koki-develop/todoist-cli@latest
 ```
 
-## Release
+### Release
 
 Download the binary from the [releases page](https://github.com/koki-develop/todoist-cli/releases/latest).
 
-
-# LICENSE
+## LICENSE
 
 [MIT LICENSE](./LICENSE)
