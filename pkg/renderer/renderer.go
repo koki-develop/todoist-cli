@@ -15,11 +15,22 @@ type Renderer struct {
 type Format string
 
 const (
-	FormatTable Format = "table"
-	FormatCSV   Format = "csv"
-	FormatJSON  Format = "json"
-	FormatYAML  Format = "yaml"
+	FormatTable    Format = "table"
+	FormatCSV      Format = "csv"
+	FormatHTML     Format = "html"
+	FormatMarkdown Format = "markdown"
+	FormatJSON     Format = "json"
+	FormatYAML     Format = "yaml"
 )
+
+var Formats = []string{
+	string(FormatTable),
+	string(FormatCSV),
+	string(FormatHTML),
+	string(FormatMarkdown),
+	string(FormatJSON),
+	string(FormatYAML),
+}
 
 type Formattable interface {
 	TableHeader() table.Row
@@ -36,6 +47,10 @@ func (r *Renderer) Render(f Formattable) (string, error) {
 		return r.renderTable(f)
 	case FormatCSV:
 		return r.renderCSV(f)
+	case FormatHTML:
+		return r.renderHTML(f)
+	case FormatMarkdown:
+		return r.renderMarkdown(f)
 	case FormatJSON:
 		return r.renderJSON(f)
 	case FormatYAML:
@@ -45,18 +60,27 @@ func (r *Renderer) Render(f Formattable) (string, error) {
 	}
 }
 
-func (r *Renderer) renderTable(f Formattable) (string, error) {
+func (r *Renderer) newTable(f Formattable) table.Writer {
 	t := table.NewWriter()
 	t.AppendHeader(f.TableHeader())
 	t.AppendRows(f.TableRows())
-	return t.Render(), nil
+	return t
+}
+
+func (r *Renderer) renderTable(f Formattable) (string, error) {
+	return r.newTable(f).Render(), nil
 }
 
 func (r *Renderer) renderCSV(f Formattable) (string, error) {
-	t := table.NewWriter()
-	t.AppendHeader(f.TableHeader())
-	t.AppendRows(f.TableRows())
-	return t.RenderCSV(), nil
+	return r.newTable(f).RenderCSV(), nil
+}
+
+func (r *Renderer) renderHTML(f Formattable) (string, error) {
+	return r.newTable(f).RenderHTML(), nil
+}
+
+func (r *Renderer) renderMarkdown(f Formattable) (string, error) {
+	return r.newTable(f).RenderMarkdown(), nil
 }
 
 func (r *Renderer) renderJSON(f Formattable) (string, error) {

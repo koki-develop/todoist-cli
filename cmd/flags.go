@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/koki-develop/todoist/pkg/renderer"
 	"github.com/spf13/cobra"
 )
@@ -15,6 +18,6 @@ func init() {
 		projectsListCmd,
 		projectsGetCmd,
 	} {
-		cmd.Flags().StringVarP(&format, "format", "f", string(renderer.FormatTable), "output format (table|json)")
+		cmd.Flags().StringVarP(&format, "format", "f", string(renderer.FormatTable), fmt.Sprintf("output format (%s)", strings.Join(renderer.Formats, "|")))
 	}
 }
