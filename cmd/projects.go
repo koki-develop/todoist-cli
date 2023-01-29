@@ -35,7 +35,35 @@ var projectsListCmd = &cobra.Command{
 	},
 }
 
+var projectGetCmd = &cobra.Command{
+	Use:  "get <PROJECT_ID>",
+	Args: cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		cl := rest.New(&rest.Config{Token: os.Getenv("TODOIST_API_TOKEN")})
+		rdr := renderer.New(renderer.FormatTable)
+
+		proj, err := cl.GetProject(id)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(proj)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(o)
+
+		return nil
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(projectsCmd)
-	projectsCmd.AddCommand(projectsListCmd)
+	projectsCmd.AddCommand(
+		projectsListCmd,
+		projectGetCmd,
+	)
 }
