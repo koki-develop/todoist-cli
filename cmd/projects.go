@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/koki-develop/todoist/pkg/renderer"
 	"github.com/koki-develop/todoist/pkg/rest"
@@ -16,7 +15,12 @@ var projectsCmd = &cobra.Command{
 var projectsListCmd = &cobra.Command{
 	Use: "list",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cl := rest.New(&rest.Config{Token: os.Getenv("TODOIST_API_TOKEN")})
+		cfg, err := loadConfig()
+		if err != nil {
+			return ErrLoadConfig
+		}
+
+		cl := rest.New(&rest.Config{Token: cfg.APIToken})
 		rdr := renderer.New(renderer.Format(format))
 
 		projs, err := cl.ListProjects()
@@ -41,7 +45,12 @@ var projectsGetCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
-		cl := rest.New(&rest.Config{Token: os.Getenv("TODOIST_API_TOKEN")})
+		cfg, err := loadConfig()
+		if err != nil {
+			return ErrLoadConfig
+		}
+
+		cl := rest.New(&rest.Config{Token: cfg.APIToken})
 		rdr := renderer.New(renderer.Format(format))
 
 		proj, err := cl.GetProject(id)

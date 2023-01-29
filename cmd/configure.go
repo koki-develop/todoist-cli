@@ -4,14 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path"
 
 	"github.com/spf13/cobra"
 )
-
-type Config struct {
-	APIToken string `json:"api_token"`
-}
 
 var configureCmd = &cobra.Command{
 	Use: "configure",
@@ -20,23 +15,24 @@ var configureCmd = &cobra.Command{
 			fmt.Print("API Token: ")
 			fmt.Scanf("%s", &apiToken)
 		}
+		if apiToken == "" {
+			fmt.Println("Canceled.")
+			return nil
+		}
 
-		cfg := &Config{APIToken: apiToken}
-		j, err := json.Marshal(cfg)
+		j, err := json.Marshal(&Config{APIToken: apiToken})
 		if err != nil {
 			return err
 		}
 
-		hmd, err := os.UserHomeDir()
+		cfgdir, err := configDir()
 		if err != nil {
 			return err
 		}
-
-		cfgdir := path.Join(hmd, ".todoist")
 		if err := os.MkdirAll(cfgdir, os.ModePerm); err != nil {
 			return err
 		}
-		cfgfile := path.Join(cfgdir, "config.json")
+		cfgfile := configFilename(cfgdir)
 		f, err := os.Create(cfgfile)
 		if err != nil {
 			return err
