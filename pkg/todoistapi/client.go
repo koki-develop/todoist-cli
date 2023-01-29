@@ -1,4 +1,4 @@
-package rest
+package todoistapi
 
 import (
 	"bytes"

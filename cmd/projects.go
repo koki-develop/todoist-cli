@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/koki-develop/todoist-cli/pkg/renderer"
-	"github.com/koki-develop/todoist-cli/pkg/rest"
+	"github.com/koki-develop/todoist-cli/pkg/todoistapi"
 	"github.com/spf13/cobra"
 )
 
@@ -31,7 +31,7 @@ var projectsListCmd = &cobra.Command{
 			return ErrLoadConfig
 		}
 
-		cl := rest.New(&rest.Config{Token: cfg.APIToken})
+		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
 		rdr := renderer.New(renderer.Format(format))
 
 		projs, err := cl.ListProjects()
@@ -61,7 +61,7 @@ var projectsGetCmd = &cobra.Command{
 			return ErrLoadConfig
 		}
 
-		cl := rest.New(&rest.Config{Token: cfg.APIToken})
+		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
 		rdr := renderer.New(renderer.Format(format))
 
 		proj, err := cl.GetProject(id)
@@ -91,10 +91,10 @@ var projectsCreateCmd = &cobra.Command{
 			return ErrLoadConfig
 		}
 
-		cl := rest.New(&rest.Config{Token: cfg.APIToken})
+		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
 		rdr := renderer.New(renderer.Format(format))
 
-		p := &rest.CreateProjectPayload{Name: name}
+		p := &todoistapi.CreateProjectPayload{Name: name}
 		if cmd.Flag("parent-id").Changed {
 			p.ParentID = &projectParentID
 		}
@@ -132,10 +132,10 @@ var projectsUpdateCmd = &cobra.Command{
 			return ErrLoadConfig
 		}
 
-		cl := rest.New(&rest.Config{Token: cfg.APIToken})
+		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
 		rdr := renderer.New(renderer.Format(format))
 
-		p := &rest.UpdateProjectPayload{}
+		p := &todoistapi.UpdateProjectPayload{}
 		if cmd.Flag("name").Changed {
 			p.Name = &projectName
 		}
@@ -173,7 +173,7 @@ var projectsDeleteCmd = &cobra.Command{
 			return ErrLoadConfig
 		}
 
-		cl := rest.New(&rest.Config{Token: cfg.APIToken})
+		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
 
 		if err := cl.DeleteProject(id); err != nil {
 			return err
