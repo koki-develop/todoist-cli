@@ -1,6 +1,8 @@
 package flags
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/spf13/cobra"
+)
 
 type Flag struct {
 	Name        string

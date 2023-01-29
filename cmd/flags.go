@@ -72,6 +72,7 @@ func init() {
 		projectsGetCmd,
 		projectsCreateCmd,
 		projectsUpdateCmd,
+		projectsDeleteCmd,
 	)
 
 	// -f, --format
