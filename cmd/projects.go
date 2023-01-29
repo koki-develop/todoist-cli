@@ -13,7 +13,6 @@ var (
 	projectName       string
 	projectColor      string
 	projectIsFavorite bool
-	projectViewStyle  string
 )
 
 var projectsCmd = &cobra.Command{
@@ -97,9 +96,6 @@ var projectsCreateCmd = &cobra.Command{
 		if projectColor != "" {
 			p.Color = &projectColor
 		}
-		if projectViewStyle != "" {
-			p.ViewStyle = &projectViewStyle
-		}
 
 		proj, err := cl.CreateProject(p)
 		if err != nil {
@@ -139,9 +135,6 @@ var projectsUpdateCmd = &cobra.Command{
 		if cmd.Flag("favorite").Changed {
 			p.IsFavorite = &projectIsFavorite
 		}
-		if projectViewStyle != "" {
-			p.ViewStyle = &projectViewStyle
-		}
 
 		proj, err := cl.UpdateProject(id, p)
 		if err != nil {
@@ -170,11 +163,9 @@ func init() {
 	projectsCreateCmd.Flags().StringVar(&projectParentID, "parent-id", "", "parent project id")
 	projectsCreateCmd.Flags().StringVar(&projectColor, "color", "", "the color of the project icon")
 	projectsCreateCmd.Flags().BoolVar(&projectIsFavorite, "favorite", false, "whether the project is a favorite")
-	projectsCreateCmd.Flags().StringVar(&projectViewStyle, "view-style", "list", "this determines the way the project is displayed within the todoist clients")
 
 	// update
 	projectsUpdateCmd.Flags().StringVar(&projectName, "name", "", "name of the project")
 	projectsUpdateCmd.Flags().StringVar(&projectColor, "color", "", "the color of the project icon")
 	projectsUpdateCmd.Flags().BoolVar(&projectIsFavorite, "favorite", false, "whether the project is a favorite")
-	projectsUpdateCmd.Flags().StringVar(&projectViewStyle, "view-style", "list", "this determines the way the project is displayed within the todoist clients")
 }
