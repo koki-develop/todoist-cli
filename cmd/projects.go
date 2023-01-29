@@ -8,13 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	projectParentID   string
-	projectName       string
-	projectColor      string
-	projectIsFavorite bool
-)
-
 var projectsCmd = &cobra.Command{
 	Use:   "projects",
 	Short: "Manage projects",
@@ -32,7 +25,7 @@ var projectsListCmd = &cobra.Command{
 		}
 
 		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd)))
+		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
 
 		projs, err := cl.ListProjects()
 		if err != nil {
@@ -62,7 +55,7 @@ var projectsGetCmd = &cobra.Command{
 		}
 
 		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd)))
+		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
 
 		proj, err := cl.GetProject(id)
 		if err != nil {
@@ -92,17 +85,13 @@ var projectsCreateCmd = &cobra.Command{
 		}
 
 		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd)))
+		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
 
-		p := &todoistapi.CreateProjectPayload{Name: name}
-		if cmd.Flag("parent-id").Changed {
-			p.ParentID = &projectParentID
-		}
-		if cmd.Flag("favorite").Changed {
-			p.IsFavorite = &projectIsFavorite
-		}
-		if cmd.Flag("color").Changed {
-			p.Color = &projectColor
+		p := &todoistapi.CreateProjectPayload{
+			Name:       name,
+			ParentID:   flagProjectParentID.Get(cmd, true),
+			IsFavorite: flagProjectFavorite.Get(cmd, true),
+			Color:      flagProjectColor.Get(cmd, true),
 		}
 
 		proj, err := cl.CreateProject(p)
@@ -133,17 +122,12 @@ var projectsUpdateCmd = &cobra.Command{
 		}
 
 		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd)))
+		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
 
-		p := &todoistapi.UpdateProjectPayload{}
-		if cmd.Flag("name").Changed {
-			p.Name = &projectName
-		}
-		if cmd.Flag("color").Changed {
-			p.Color = &projectColor
-		}
-		if cmd.Flag("favorite").Changed {
-			p.IsFavorite = &projectIsFavorite
+		p := &todoistapi.UpdateProjectPayload{
+			Name:       flagProjectName.Get(cmd, true),
+			Color:      flagProjectColor.Get(cmd, true),
+			IsFavorite: flagProjectFavorite.Get(cmd, true),
 		}
 
 		proj, err := cl.UpdateProject(id, p)
@@ -192,14 +176,4 @@ func init() {
 		projectsUpdateCmd,
 		projectsDeleteCmd,
 	)
-
-	// create
-	projectsCreateCmd.Flags().StringVar(&projectParentID, "parent-id", "", "parent project id")
-	projectsCreateCmd.Flags().StringVar(&projectColor, "color", "", "the color of the project icon")
-	projectsCreateCmd.Flags().BoolVar(&projectIsFavorite, "favorite", false, "whether the project is a favorite")
-
-	// update
-	projectsUpdateCmd.Flags().StringVar(&projectName, "name", "", "name of the project")
-	projectsUpdateCmd.Flags().StringVar(&projectColor, "color", "", "the color of the project icon")
-	projectsUpdateCmd.Flags().BoolVar(&projectIsFavorite, "favorite", false, "whether the project is a favorite")
 }

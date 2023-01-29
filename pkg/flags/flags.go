@@ -6,7 +6,6 @@ type Flag struct {
 	Name        string
 	ShortName   string
 	Description string
-	Nullable    bool
 }
 
 func (f *Flag) Changed(cmd *cobra.Command) bool {
@@ -25,31 +24,27 @@ type Bool struct {
 	value   bool
 }
 
-func (f *String) Add(cmd *cobra.Command) {
-	cmd.Flags().StringVarP(&f.value, f.Name, f.ShortName, f.Default, f.Description)
+func (f *String) Add(cmds ...*cobra.Command) {
+	for _, cmd := range cmds {
+		cmd.Flags().StringVarP(&f.value, f.Name, f.ShortName, f.Default, f.Description)
+	}
 }
 
-func (f *String) Set(v string) {
-	f.value = v
-}
-
-func (f *String) Get(cmd *cobra.Command) *string {
-	if f.Nullable && !f.Changed(cmd) {
+func (f *String) Get(cmd *cobra.Command, nullable bool) *string {
+	if nullable && !f.Changed(cmd) {
 		return nil
 	}
 	return &f.value
 }
 
-func (f *Bool) Add(cmd *cobra.Command) {
-	cmd.Flags().BoolVarP(&f.value, f.Name, f.ShortName, f.Default, f.Description)
+func (f *Bool) Add(cmds ...*cobra.Command) {
+	for _, cmd := range cmds {
+		cmd.Flags().BoolVarP(&f.value, f.Name, f.ShortName, f.Default, f.Description)
+	}
 }
 
-func (f *Bool) Set(v bool) {
-	f.value = v
-}
-
-func (f *Bool) Get(cmd *cobra.Command) *bool {
-	if f.Nullable && !f.Changed(cmd) {
+func (f *Bool) Get(cmd *cobra.Command, nullable bool) *bool {
+	if nullable && !f.Changed(cmd) {
 		return nil
 	}
 	return &f.value

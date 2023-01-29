@@ -35,7 +35,7 @@ func loadConfig(cmd *cobra.Command) (*Config, error) {
 		return nil, err
 	}
 
-	if tkn := flagAPIToken.Get(cmd); tkn != nil {
+	if tkn := flagAPIToken.Get(cmd, true); tkn != nil {
 		cfg.APIToken = *tkn
 	}
 
