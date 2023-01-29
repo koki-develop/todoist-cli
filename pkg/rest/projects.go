@@ -56,3 +56,24 @@ func (cl *Client) CreateProject(p *CreateProjectPayload) (*models.Project, error
 
 	return &proj, nil
 }
+
+type UpdateProjectPayload struct {
+	Name       *string `json:"name,omitempty"`
+	Color      *string `json:"color,omitempty"`
+	IsFavorite *bool   `json:"is_favorite,omitempty"`
+	ViewStyle  *string `json:"view_style,omitempty"`
+}
+
+func (cl *Client) UpdateProject(id string, p *UpdateProjectPayload) (*models.Project, error) {
+	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("projects/%s", id), p)
+	if err != nil {
+		return nil, err
+	}
+
+	var proj models.Project
+	if err := cl.doRequest(req, &proj); err != nil {
+		return nil, err
+	}
+
+	return &proj, nil
+}
