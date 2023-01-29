@@ -16,6 +16,7 @@ type Format string
 
 const (
 	FormatTable Format = "table"
+	FormatCSV   Format = "csv"
 	FormatJSON  Format = "json"
 	FormatYAML  Format = "yaml"
 )
@@ -33,6 +34,8 @@ func (r *Renderer) Render(f Formattable) (string, error) {
 	switch r.format {
 	case FormatTable:
 		return r.renderTable(f)
+	case FormatCSV:
+		return r.renderCSV(f)
 	case FormatJSON:
 		return r.renderJSON(f)
 	case FormatYAML:
@@ -47,6 +50,13 @@ func (r *Renderer) renderTable(f Formattable) (string, error) {
 	t.AppendHeader(f.TableHeader())
 	t.AppendRows(f.TableRows())
 	return t.Render(), nil
+}
+
+func (r *Renderer) renderCSV(f Formattable) (string, error) {
+	t := table.NewWriter()
+	t.AppendHeader(f.TableHeader())
+	t.AppendRows(f.TableRows())
+	return t.RenderCSV(), nil
 }
 
 func (r *Renderer) renderJSON(f Formattable) (string, error) {
