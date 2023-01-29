@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/koki-develop/todoist-cli/pkg/renderer"
 	"github.com/koki-develop/todoist-cli/pkg/todoistapi"
 	"github.com/spf13/cobra"
 )
@@ -19,15 +18,11 @@ var projectsListCmd = &cobra.Command{
 	Short: "List all projects",
 	Long:  "List all projects.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cfg, err := loadConfig(cmd)
-		if err != nil {
-			return ErrLoadConfig
+		if err := load(cmd); err != nil {
+			return err
 		}
 
-		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
-
-		projs, err := cl.ListProjects()
+		projs, err := client.ListProjects()
 		if err != nil {
 			return err
 		}
@@ -48,16 +43,11 @@ var projectsGetCmd = &cobra.Command{
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
-
-		cfg, err := loadConfig(cmd)
-		if err != nil {
-			return ErrLoadConfig
+		if err := load(cmd); err != nil {
+			return err
 		}
 
-		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
-
-		proj, err := cl.GetProject(id)
+		proj, err := client.GetProject(id)
 		if err != nil {
 			return err
 		}
@@ -79,13 +69,9 @@ var projectsCreateCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		name := args[0]
 
-		cfg, err := loadConfig(cmd)
-		if err != nil {
-			return ErrLoadConfig
+		if err := load(cmd); err != nil {
+			return err
 		}
-
-		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
 
 		p := &todoistapi.CreateProjectPayload{
 			Name:       name,
@@ -94,7 +80,7 @@ var projectsCreateCmd = &cobra.Command{
 			Color:      flagProjectColor.Get(cmd, true),
 		}
 
-		proj, err := cl.CreateProject(p)
+		proj, err := client.CreateProject(p)
 		if err != nil {
 			return err
 		}
@@ -116,13 +102,9 @@ var projectsUpdateCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
-		cfg, err := loadConfig(cmd)
-		if err != nil {
-			return ErrLoadConfig
+		if err := load(cmd); err != nil {
+			return err
 		}
-
-		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-		rdr := renderer.New(renderer.Format(*flagFormat.Get(cmd, false)))
 
 		p := &todoistapi.UpdateProjectPayload{
 			Name:       flagProjectName.Get(cmd, true),
@@ -130,7 +112,7 @@ var projectsUpdateCmd = &cobra.Command{
 			IsFavorite: flagProjectFavorite.Get(cmd, true),
 		}
 
-		proj, err := cl.UpdateProject(id, p)
+		proj, err := client.UpdateProject(id, p)
 		if err != nil {
 			return err
 		}
@@ -152,14 +134,11 @@ var projectsDeleteCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
-		cfg, err := loadConfig(cmd)
-		if err != nil {
-			return ErrLoadConfig
+		if err := load(cmd); err != nil {
+			return err
 		}
 
-		cl := todoistapi.New(&todoistapi.Config{Token: cfg.APIToken})
-
-		if err := cl.DeleteProject(id); err != nil {
+		if err := client.DeleteProject(id); err != nil {
 			return err
 		}
 
