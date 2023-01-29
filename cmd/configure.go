@@ -23,22 +23,40 @@ var configureCmd = &cobra.Command{
 	Short: "Configure CLI settings",
 	Long:  "Configure CLI settings.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cfg := &config.Config{}
-		if tkn := flagAPIToken.Get(cmd, true); tkn != nil {
-			cfg.APIToken = tkn
-		} else {
+		ipt := &config.Config{
+			APIToken: flagAPIToken.Get(cmd, true),
+			Format:   (*renderer.Format)(flagFormat.Get(cmd, true)),
+		}
+		it := ipt.APIToken == nil && ipt.Format == nil
+
+		def := &config.Config{
+			APIToken: ipt.APIToken,
+			Format:   ipt.Format,
+		}
+		cfg, _ := config.Load(def)
+		if cfg == nil {
+			cfg = def
+		}
+
+		if cfg.APIToken == nil || it {
 			tkn := read("API Token")
-			cfg.APIToken = &tkn
+			if tkn != "" {
+				cfg.APIToken = &tkn
+			}
 		}
 
-		if f := flagFormat.Get(cmd, true); f != nil {
-			cfg.Format = (*renderer.Format)(f)
-		} else {
+		if ipt.Format == nil && it {
 			f := read(fmt.Sprintf("Default Output Format (optional) (%s)", strings.Join(renderer.Formats, "|")))
-			cfg.Format = (*renderer.Format)(&f)
+			if f != "" {
+				cfg.Format = (*renderer.Format)(&f)
+			}
+		}
+		if cfg.Format == nil {
+			f := renderer.FormatTable
+			cfg.Format = &f
 		}
 
-		j, err := json.Marshal(cfg)
+		j, err := json.MarshalIndent(cfg, "", "  ")
 		if err != nil {
 			return err
 		}

@@ -20,8 +20,9 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
-		if err == ErrLoadConfig {
-			fmt.Println("Run `todoist-cli configure` to reconfigure.")
+		switch err {
+		case ErrLoadConfig, ErrAPITokenNotConfigured:
+			fmt.Fprintln(os.Stderr, "Run `todoist-cli configure` to reconfigure.")
 		}
 		os.Exit(1)
 	}

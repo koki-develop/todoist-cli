@@ -15,16 +15,20 @@ var (
 )
 
 var (
-	ErrLoadConfig = errors.New("failed to load config")
+	ErrLoadConfig            = errors.New("failed to load config")
+	ErrAPITokenNotConfigured = errors.New("api token is not configured")
 )
 
 func load(cmd *cobra.Command) error {
-	cfg, err := config.Load(cmd, &config.Config{
+	cfg, err := config.Load(&config.Config{
 		APIToken: flagAPIToken.Get(cmd, true),
 		Format:   (*renderer.Format)(flagFormat.Get(cmd, true)),
 	})
 	if err != nil {
 		return ErrLoadConfig
+	}
+	if cfg.APIToken == nil {
+		return ErrAPITokenNotConfigured
 	}
 
 	client = todoistapi.New(&todoistapi.Config{Token: *cfg.APIToken})

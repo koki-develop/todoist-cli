@@ -6,17 +6,16 @@ import (
 	"path"
 
 	"github.com/koki-develop/todoist-cli/pkg/renderer"
-	"github.com/spf13/cobra"
 )
 
 type Config struct {
-	APIToken *string          `json:"api_token"`
+	APIToken *string          `json:"api_token,omitempty"`
 	Format   *renderer.Format `json:"format,omitempty"`
 }
 
 func format(f renderer.Format) *renderer.Format { return &f }
 
-func Load(cmd *cobra.Command, def *Config) (*Config, error) {
+func Load(def *Config) (*Config, error) {
 	dir, err := Dir()
 	if err != nil {
 		return nil, err
@@ -33,11 +32,13 @@ func Load(cmd *cobra.Command, def *Config) (*Config, error) {
 	if err := json.NewDecoder(f).Decode(&cfg); err != nil {
 		return nil, err
 	}
-	if def.APIToken != nil {
-		cfg.APIToken = def.APIToken
-	}
-	if def.Format != nil {
-		cfg.Format = def.Format
+	if def != nil {
+		if def.APIToken != nil {
+			cfg.APIToken = def.APIToken
+		}
+		if def.Format != nil {
+			cfg.Format = def.Format
+		}
 	}
 	if cfg.Format == nil {
 		cfg.Format = format(renderer.FormatTable)
