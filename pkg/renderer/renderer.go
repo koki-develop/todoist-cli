@@ -10,10 +10,12 @@ type Format string
 
 const (
 	FormatTable Format = "table"
+	FormatJSON  Format = "json"
 )
 
 type Formattable interface {
-	Table() string
+	Table() (string, error)
+	JSON() (string, error)
 }
 
 func New(f Format) *Renderer {
@@ -23,7 +25,9 @@ func New(f Format) *Renderer {
 func (r *Renderer) Render(f Formattable) (string, error) {
 	switch r.format {
 	case FormatTable:
-		return f.Table(), nil
+		return f.Table()
+	case FormatJSON:
+		return f.JSON()
 	default:
 		return "", fmt.Errorf("unsupported format: %s", r.format)
 	}

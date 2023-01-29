@@ -1,6 +1,8 @@
 package models
 
 import (
+	"encoding/json"
+
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/koki-develop/todoist/pkg/renderer"
 )
@@ -47,14 +49,30 @@ func newProjectsTableWriter() table.Writer {
 	return t
 }
 
-func (proj *Project) Table() string {
+func (proj *Project) Table() (string, error) {
 	t := newProjectsTableWriter()
 	t.AppendRow(proj.tableRow())
-	return t.Render()
+	return t.Render(), nil
 }
 
-func (projs Projects) Table() string {
+func (proj *Project) JSON() (string, error) {
+	j, err := json.MarshalIndent(proj, "", "  ")
+	if err != nil {
+		return "", err
+	}
+	return string(j), nil
+}
+
+func (projs Projects) Table() (string, error) {
 	t := newProjectsTableWriter()
 	t.AppendRows(projs.tableRows())
-	return t.Render()
+	return t.Render(), nil
+}
+
+func (projs Projects) JSON() (string, error) {
+	j, err := json.MarshalIndent(projs, "", "  ")
+	if err != nil {
+		return "", err
+	}
+	return string(j), nil
 }

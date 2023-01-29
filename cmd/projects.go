@@ -17,7 +17,7 @@ var projectsListCmd = &cobra.Command{
 	Use: "list",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cl := rest.New(&rest.Config{Token: os.Getenv("TODOIST_API_TOKEN")})
-		rdr := renderer.New(renderer.FormatTable)
+		rdr := renderer.New(renderer.Format(format))
 
 		projs, err := cl.ListProjects()
 		if err != nil {
@@ -35,14 +35,14 @@ var projectsListCmd = &cobra.Command{
 	},
 }
 
-var projectGetCmd = &cobra.Command{
+var projectsGetCmd = &cobra.Command{
 	Use:  "get <PROJECT_ID>",
 	Args: cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id := args[0]
 
 		cl := rest.New(&rest.Config{Token: os.Getenv("TODOIST_API_TOKEN")})
-		rdr := renderer.New(renderer.FormatTable)
+		rdr := renderer.New(renderer.Format(format))
 
 		proj, err := cl.GetProject(id)
 		if err != nil {
@@ -64,6 +64,6 @@ func init() {
 	rootCmd.AddCommand(projectsCmd)
 	projectsCmd.AddCommand(
 		projectsListCmd,
-		projectGetCmd,
+		projectsGetCmd,
 	)
 }
