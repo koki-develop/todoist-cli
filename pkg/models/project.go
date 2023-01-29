@@ -1,5 +1,14 @@
 package models
 
+import (
+	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/koki-develop/todoist/pkg/renderer"
+)
+
+var (
+	_ renderer.Formattable = (*Projects)(nil)
+)
+
 type Project struct {
 	ID             *string `json:"id"`
 	ParentID       *string `json:"parent_id"`
@@ -16,3 +25,14 @@ type Project struct {
 }
 
 type Projects []*Project
+
+func (projs Projects) Table() string {
+	t := table.NewWriter()
+
+	t.AppendHeader(table.Row{"PROJECT_ID", "NAME", "STYLE"})
+	for _, proj := range projs {
+		t.AppendRow(table.Row{*proj.ID, *proj.Name, *proj.ViewStyle})
+	}
+
+	return t.Render()
+}
