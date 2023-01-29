@@ -46,7 +46,7 @@ func configDir() (string, error) {
 		return "", err
 	}
 
-	return path.Join(hmd, ".todoist"), nil
+	return path.Join(hmd, ".todoist-cli"), nil
 }
 
 func configFilename(dir string) string {

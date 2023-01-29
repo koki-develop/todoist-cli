@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/koki-develop/todoist/pkg/renderer"
+	"github.com/koki-develop/todoist-cli/pkg/renderer"
 )
 
 var (

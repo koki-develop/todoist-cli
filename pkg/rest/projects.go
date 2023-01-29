@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/koki-develop/todoist/pkg/models"
+	"github.com/koki-develop/todoist-cli/pkg/models"
 )
 
 func (cl *Client) ListProjects() (models.Projects, error) {

@@ -13,7 +13,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:  "todoist",
+	Use:  "todoist-cli",
 	Long: "CLI Client for Todoist.",
 }
 
@@ -21,7 +21,7 @@ func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
 		if err == ErrLoadConfig {
-			fmt.Println("Run `todoist configure` to reconfigure.")
+			fmt.Println("Run `todoist-cli configure` to reconfigure.")
 		}
 		os.Exit(1)
 	}

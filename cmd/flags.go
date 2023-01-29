@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/koki-develop/todoist/pkg/renderer"
+	"github.com/koki-develop/todoist-cli/pkg/renderer"
 	"github.com/spf13/cobra"
 )
 

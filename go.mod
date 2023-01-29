@@ -1,4 +1,4 @@
-module github.com/koki-develop/todoist
+module github.com/koki-develop/todoist-cli
 
 go 1.19
 

@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/koki-develop/todoist/pkg/renderer"
-	"github.com/koki-develop/todoist/pkg/rest"
+	"github.com/koki-develop/todoist-cli/pkg/renderer"
+	"github.com/koki-develop/todoist-cli/pkg/rest"
 	"github.com/spf13/cobra"
 )
 
