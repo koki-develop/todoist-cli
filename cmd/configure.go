@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/koki-develop/todoist-cli/pkg/config"
 	"github.com/koki-develop/todoist-cli/pkg/renderer"
 	"github.com/spf13/cobra"
 )
@@ -22,19 +23,19 @@ var configureCmd = &cobra.Command{
 	Short: "Configure CLI settings",
 	Long:  "Configure CLI settings.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cfg := &Config{}
+		cfg := &config.Config{}
 		if tkn := flagAPIToken.Get(cmd, true); tkn != nil {
-			cfg.APIToken = *tkn
+			cfg.APIToken = tkn
 		} else {
 			tkn := read("API Token")
-			cfg.APIToken = tkn
+			cfg.APIToken = &tkn
 		}
 
 		if f := flagFormat.Get(cmd, true); f != nil {
-			cfg.Format = *f
+			cfg.Format = (*renderer.Format)(f)
 		} else {
 			f := read(fmt.Sprintf("Default Output Format (optional) (%s)", strings.Join(renderer.Formats, "|")))
-			cfg.Format = f
+			cfg.Format = (*renderer.Format)(&f)
 		}
 
 		j, err := json.Marshal(cfg)
@@ -42,14 +43,14 @@ var configureCmd = &cobra.Command{
 			return err
 		}
 
-		cfgdir, err := configDir()
+		cfgdir, err := config.Dir()
 		if err != nil {
 			return err
 		}
 		if err := os.MkdirAll(cfgdir, os.ModePerm); err != nil {
 			return err
 		}
-		cfgfile := configFilename(cfgdir)
+		cfgfile := config.Filename(cfgdir)
 		f, err := os.Create(cfgfile)
 		if err != nil {
 			return err
