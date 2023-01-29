@@ -9,11 +9,21 @@ import (
 )
 
 var (
-	format string
+	apiToken string
+	format   string
 )
 
 func init() {
-	// output
+	// api token
+	for _, cmd := range []*cobra.Command{
+		configureCmd,
+		projectsListCmd,
+		projectsGetCmd,
+	} {
+		cmd.Flags().StringVar(&apiToken, "api-token", "", "todoist api token")
+	}
+
+	// format
 	for _, cmd := range []*cobra.Command{
 		projectsListCmd,
 		projectsGetCmd,
