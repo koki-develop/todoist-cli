@@ -8,6 +8,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	projectParentID   string
+	projectColor      string
+	projectIsFavorite bool
+	projectViewStyle  string
+)
+
 var projectsCmd = &cobra.Command{
 	Use: "projects",
 }
@@ -80,8 +87,19 @@ var projectsCreateCmd = &cobra.Command{
 		rdr := renderer.New(renderer.Format(format))
 
 		p := &rest.CreateProjectPayload{
-			Name: name,
+			Name:       name,
+			IsFavorite: &projectIsFavorite,
 		}
+		if projectParentID != "" {
+			p.ParentID = &projectParentID
+		}
+		if projectColor != "" {
+			p.Color = &projectColor
+		}
+		if projectViewStyle != "" {
+			p.ViewStyle = &projectViewStyle
+		}
+
 		proj, err := cl.CreateProject(p)
 		if err != nil {
 			return err
@@ -103,4 +121,9 @@ func init() {
 		projectsGetCmd,
 		projectsCreateCmd,
 	)
+
+	projectsCreateCmd.Flags().StringVar(&projectParentID, "parent-id", "", "parent project id")
+	projectsCreateCmd.Flags().StringVar(&projectColor, "color", "", "the color of the project icon")
+	projectsCreateCmd.Flags().BoolVar(&projectIsFavorite, "favorite", false, "whether the project is a favorite")
+	projectsCreateCmd.Flags().StringVar(&projectViewStyle, "view-style", "list", "this determines the way the project is displayed within the todoist clients")
 }

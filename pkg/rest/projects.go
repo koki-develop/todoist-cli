@@ -36,7 +36,11 @@ func (cl *Client) GetProject(id string) (*models.Project, error) {
 }
 
 type CreateProjectPayload struct {
-	Name string
+	Name       string  `json:"name"`
+	ParentID   *string `json:"parent_id"`
+	Color      *string `json:"color"`
+	IsFavorite *bool   `json:"is_favorite"`
+	ViewStyle  *string `json:"view_style"`
 }
 
 func (cl *Client) CreateProject(p *CreateProjectPayload) (*models.Project, error) {
