@@ -34,3 +34,21 @@ func (cl *Client) GetProject(id string) (*models.Project, error) {
 
 	return &proj, nil
 }
+
+type CreateProjectPayload struct {
+	Name string
+}
+
+func (cl *Client) CreateProject(p *CreateProjectPayload) (*models.Project, error) {
+	req, err := cl.newRequest(http.MethodPost, "projects", p)
+	if err != nil {
+		return nil, err
+	}
+
+	var proj models.Project
+	if err := cl.doRequest(req, &proj); err != nil {
+		return nil, err
+	}
+
+	return &proj, nil
+}

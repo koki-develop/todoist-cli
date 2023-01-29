@@ -33,6 +33,10 @@ func loadConfig() (*Config, error) {
 		return nil, err
 	}
 
+	if apiToken != "" {
+		cfg.APIToken = apiToken
+	}
+
 	return &cfg, nil
 }
 

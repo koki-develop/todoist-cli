@@ -19,6 +19,7 @@ func init() {
 		configureCmd,
 		projectsListCmd,
 		projectsGetCmd,
+		projectsCreateCmd,
 	} {
 		cmd.Flags().StringVar(&apiToken, "api-token", "", "todoist api token")
 	}
@@ -27,6 +28,7 @@ func init() {
 	for _, cmd := range []*cobra.Command{
 		projectsListCmd,
 		projectsGetCmd,
+		projectsCreateCmd,
 	} {
 		cmd.Flags().StringVarP(&format, "format", "f", string(renderer.FormatTable), fmt.Sprintf("output format (%s)", strings.Join(renderer.Formats, "|")))
 	}

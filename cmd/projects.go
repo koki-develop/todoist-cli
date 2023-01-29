@@ -32,9 +32,7 @@ var projectsListCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-
 		fmt.Println(o)
-
 		return nil
 	},
 }
@@ -62,9 +60,38 @@ var projectsGetCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-
 		fmt.Println(o)
+		return nil
+	},
+}
 
+var projectsCreateCmd = &cobra.Command{
+	Use:  "create <PROJECT_NAME>",
+	Args: cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		name := args[0]
+
+		cfg, err := loadConfig()
+		if err != nil {
+			return ErrLoadConfig
+		}
+
+		cl := rest.New(&rest.Config{Token: cfg.APIToken})
+		rdr := renderer.New(renderer.Format(format))
+
+		p := &rest.CreateProjectPayload{
+			Name: name,
+		}
+		proj, err := cl.CreateProject(p)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(proj)
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
 		return nil
 	},
 }
@@ -74,5 +101,6 @@ func init() {
 	projectsCmd.AddCommand(
 		projectsListCmd,
 		projectsGetCmd,
+		projectsCreateCmd,
 	)
 }

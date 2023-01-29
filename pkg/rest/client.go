@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -26,11 +27,20 @@ func New(cfg *Config) *Client {
 	}
 }
 
-func (cl *Client) newRequest(method, pathname string, body io.Reader) (*http.Request, error) {
+func (cl *Client) newRequest(method, pathname string, body interface{}) (*http.Request, error) {
 	u := &url.URL{Scheme: "https", Path: "api.todoist.com/rest/v2"}
 	u.Path = path.Join(u.Path, pathname)
 
-	req, err := http.NewRequest(method, u.String(), body)
+	var p io.Reader = nil
+	if body != nil {
+		j, err := json.Marshal(body)
+		if err != nil {
+			return nil, err
+		}
+		p = bytes.NewReader(j)
+	}
+
+	req, err := http.NewRequest(method, u.String(), p)
 	if err != nil {
 		return nil, err
 	}
