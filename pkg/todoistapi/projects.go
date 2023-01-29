@@ -35,7 +35,7 @@ func (cl *Client) GetProject(id string) (*models.Project, error) {
 	return &proj, nil
 }
 
-type CreateProjectPayload struct {
+type CreateProjectParameters struct {
 	Name       string  `json:"name"`
 	ParentID   *string `json:"parent_id,omitempty"`
 	Color      *string `json:"color,omitempty"`
@@ -43,7 +43,7 @@ type CreateProjectPayload struct {
 	ViewStyle  *string `json:"view_style,omitempty"`
 }
 
-func (cl *Client) CreateProject(p *CreateProjectPayload) (*models.Project, error) {
+func (cl *Client) CreateProject(p *CreateProjectParameters) (*models.Project, error) {
 	req, err := cl.newRequest(http.MethodPost, "projects", p)
 	if err != nil {
 		return nil, err
@@ -57,14 +57,14 @@ func (cl *Client) CreateProject(p *CreateProjectPayload) (*models.Project, error
 	return &proj, nil
 }
 
-type UpdateProjectPayload struct {
+type UpdateProjectParameters struct {
 	Name       *string `json:"name,omitempty"`
 	Color      *string `json:"color,omitempty"`
 	IsFavorite *bool   `json:"is_favorite,omitempty"`
 	ViewStyle  *string `json:"view_style,omitempty"`
 }
 
-func (cl *Client) UpdateProject(id string, p *UpdateProjectPayload) (*models.Project, error) {
+func (cl *Client) UpdateProject(id string, p *UpdateProjectParameters) (*models.Project, error) {
 	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("projects/%s", id), p)
 	if err != nil {
 		return nil, err

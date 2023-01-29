@@ -73,7 +73,7 @@ var projectsCreateCmd = &cobra.Command{
 			return err
 		}
 
-		p := &todoistapi.CreateProjectPayload{
+		p := &todoistapi.CreateProjectParameters{
 			Name:       name,
 			ParentID:   flagProjectParentID.Get(cmd, true),
 			IsFavorite: flagProjectFavorite.Get(cmd, true),
@@ -106,7 +106,7 @@ var projectsUpdateCmd = &cobra.Command{
 			return err
 		}
 
-		p := &todoistapi.UpdateProjectPayload{
+		p := &todoistapi.UpdateProjectParameters{
 			Name:       flagProjectName.Get(cmd, true),
 			Color:      flagProjectColor.Get(cmd, true),
 			IsFavorite: flagProjectFavorite.Get(cmd, true),
