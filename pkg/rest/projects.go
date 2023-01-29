@@ -77,3 +77,16 @@ func (cl *Client) UpdateProject(id string, p *UpdateProjectPayload) (*models.Pro
 
 	return &proj, nil
 }
+
+func (cl *Client) DeleteProject(id string) error {
+	req, err := cl.newRequest(http.MethodDelete, fmt.Sprintf("projects/%s", id), nil)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}

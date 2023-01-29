@@ -65,8 +65,10 @@ func (cl *Client) doRequest(req *http.Request, dst interface{}) error {
 		return errors.New(string(b))
 	}
 
-	if err := json.NewDecoder(resp.Body).Decode(dst); err != nil {
-		return err
+	if dst != nil {
+		if err := json.NewDecoder(resp.Body).Decode(dst); err != nil {
+			return err
+		}
 	}
 
 	return nil

@@ -150,6 +150,27 @@ var projectsUpdateCmd = &cobra.Command{
 	},
 }
 
+var projectsDeleteCmd = &cobra.Command{
+	Use:  "delete <PROJECT_ID>",
+	Args: cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		cfg, err := loadConfig()
+		if err != nil {
+			return ErrLoadConfig
+		}
+
+		cl := rest.New(&rest.Config{Token: cfg.APIToken})
+
+		if err := cl.DeleteProject(id); err != nil {
+			return err
+		}
+
+		return nil
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(projectsCmd)
 	projectsCmd.AddCommand(
@@ -157,6 +178,7 @@ func init() {
 		projectsGetCmd,
 		projectsCreateCmd,
 		projectsUpdateCmd,
+		projectsDeleteCmd,
 	)
 
 	// create
