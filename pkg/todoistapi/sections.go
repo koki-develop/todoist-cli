@@ -76,3 +76,16 @@ func (cl *Client) UpdateSection(id string, p *UpdateSectionParameters) (*models.
 
 	return &sec, nil
 }
+
+func (cl *Client) DeleteSection(id string) error {
+	req, err := cl.newRequest(http.MethodDelete, fmt.Sprintf("sections/%s", id), nil, nil)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}
