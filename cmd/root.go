@@ -62,6 +62,7 @@ func init() {
 	sectionsCmd.AddCommand(
 		sectionsListCmd,
 		sectionsGetCmd,
+		sectionsCreateCmd,
 	)
 
 	/*
@@ -103,5 +104,13 @@ func init() {
 	// --project-id
 	flagSectionProjectID.Add(
 		sectionsListCmd,
+	)
+	flagSectionProjectIDForCreate.Add(
+		sectionsCreateCmd,
+	)
+
+	// --order
+	flagSectionOrder.Add(
+		sectionsCreateCmd,
 	)
 }

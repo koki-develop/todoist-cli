@@ -64,3 +64,34 @@ var sectionsGetCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var sectionsCreateCmd = &cobra.Command{
+	Use:   "create <SECTION_NAME>",
+	Short: "Create a section",
+	Long:  "Create a section.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		name := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		p := &todoistapi.CreateSectionParameters{
+			Name:      name,
+			ProjectID: *flagSectionProjectIDForCreate.Get(cmd, false),
+			Order:     flagSectionOrder.Get(cmd, true),
+		}
+		sec, err := client.CreateSection(p)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(sec)
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}

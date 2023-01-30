@@ -38,3 +38,23 @@ func (cl *Client) GetSection(id string) (*models.Section, error) {
 
 	return &sec, nil
 }
+
+type CreateSectionParameters struct {
+	Name      string `json:"name"`
+	ProjectID string `json:"project_id"`
+	Order     *int   `json:"order,omitempty"`
+}
+
+func (cl *Client) CreateSection(p *CreateSectionParameters) (*models.Section, error) {
+	req, err := cl.newRequest(http.MethodPost, "sections", nil, p)
+	if err != nil {
+		return nil, err
+	}
+
+	var sec models.Section
+	if err := cl.doRequest(req, &sec); err != nil {
+		return nil, err
+	}
+
+	return &sec, nil
+}

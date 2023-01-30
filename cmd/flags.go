@@ -71,4 +71,21 @@ var (
 			Description: "filter sections by project id",
 		},
 	}
+
+	// --project-id (for create)
+	flagSectionProjectIDForCreate = &flags.String{
+		Flag: &flags.Flag{
+			Name:        "project-id",
+			Description: "project id this section should belong to",
+			Required:    true,
+		},
+	}
+
+	// --order
+	flagSectionOrder = &flags.Int{
+		Flag: &flags.Flag{
+			Name:        "order",
+			Description: "order among other sections in a project",
+		},
+	}
 )
