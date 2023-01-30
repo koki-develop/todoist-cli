@@ -124,3 +124,23 @@ var sectionsUpdateCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var sectionsDeleteCmd = &cobra.Command{
+	Use:   "delete <SECTION_ID>",
+	Short: "Delete a section",
+	Long:  "Delete a section.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		if err := client.DeleteSection(id); err != nil {
+			return err
+		}
+
+		return nil
+	},
+}

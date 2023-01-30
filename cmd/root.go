@@ -64,6 +64,7 @@ func init() {
 		sectionsGetCmd,
 		sectionsCreateCmd,
 		sectionsUpdateCmd,
+		sectionsDeleteCmd,
 	)
 
 	/*
