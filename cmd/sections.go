@@ -64,11 +64,3 @@ var sectionsGetCmd = &cobra.Command{
 		return nil
 	},
 }
-
-func init() {
-	rootCmd.AddCommand(sectionsCmd)
-	sectionsCmd.AddCommand(
-		sectionsListCmd,
-		sectionsGetCmd,
-	)
-}

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"os"
 	"time"
 
 	"github.com/charmbracelet/lipgloss"
@@ -54,8 +53,4 @@ func notifyNewRelease(w io.Writer) error {
 	}
 
 	return nil
-}
-
-func init() {
-	_ = notifyNewRelease(os.Stderr)
 }

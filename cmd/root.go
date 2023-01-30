@@ -29,11 +29,79 @@ func Execute() {
 }
 
 func init() {
+	/*
+	 * version
+	 */
 	if version == "" {
 		if info, ok := debug.ReadBuildInfo(); ok {
 			version = info.Main.Version
 		}
 	}
-
 	rootCmd.Version = version
+	_ = notifyNewRelease(os.Stderr)
+
+	/*
+	 * add commands
+	 */
+
+	// configure
+	rootCmd.AddCommand(configureCmd)
+
+	// projects
+	rootCmd.AddCommand(projectsCmd)
+	projectsCmd.AddCommand(
+		projectsListCmd,
+		projectsGetCmd,
+		projectsCreateCmd,
+		projectsUpdateCmd,
+		projectsDeleteCmd,
+	)
+
+	// sections
+	rootCmd.AddCommand(sectionsCmd)
+	sectionsCmd.AddCommand(
+		sectionsListCmd,
+		sectionsGetCmd,
+	)
+
+	/*
+	 * flags
+	 */
+
+	// --api-token
+	flagAPIToken.Add(configureCmd)
+	flagAPIToken.Add(projectsCmd.Commands()...)
+	flagAPIToken.Add(sectionsCmd.Commands()...)
+
+	// -f, --format
+	flagFormat.Add(configureCmd)
+	flagFormat.Add(projectsCmd.Commands()...)
+	flagFormat.Add(sectionsCmd.Commands()...)
+
+	// --parent-id
+	flagProjectParentID.Add(
+		projectsCreateCmd,
+	)
+
+	// --color
+	flagProjectColor.Add(
+		projectsCreateCmd,
+		projectsUpdateCmd,
+	)
+
+	// --favorite
+	flagProjectFavorite.Add(
+		projectsCreateCmd,
+		projectsUpdateCmd,
+	)
+
+	// --name
+	flagProjectName.Add(
+		projectsUpdateCmd,
+	)
+
+	// --project-id
+	flagSectionProjectID.Add(
+		sectionsListCmd,
+	)
 }

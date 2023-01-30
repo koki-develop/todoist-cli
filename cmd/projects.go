@@ -145,14 +145,3 @@ var projectsDeleteCmd = &cobra.Command{
 		return nil
 	},
 }
-
-func init() {
-	rootCmd.AddCommand(projectsCmd)
-	projectsCmd.AddCommand(
-		projectsListCmd,
-		projectsGetCmd,
-		projectsCreateCmd,
-		projectsUpdateCmd,
-		projectsDeleteCmd,
-	)
-}
