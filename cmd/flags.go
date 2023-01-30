@@ -88,4 +88,13 @@ var (
 			Description: "order among other sections in a project",
 		},
 	}
+
+	// --name
+	flagSectionNameForUpdate = &flags.String{
+		Flag: &flags.Flag{
+			Name:        "name",
+			Description: "section name",
+			Required:    true,
+		},
+	}
 )

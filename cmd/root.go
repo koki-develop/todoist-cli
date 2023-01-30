@@ -63,6 +63,7 @@ func init() {
 		sectionsListCmd,
 		sectionsGetCmd,
 		sectionsCreateCmd,
+		sectionsUpdateCmd,
 	)
 
 	/*
@@ -99,6 +100,9 @@ func init() {
 	// --name
 	flagProjectName.Add(
 		projectsUpdateCmd,
+	)
+	flagSectionNameForUpdate.Add(
+		sectionsUpdateCmd,
 	)
 
 	// --project-id

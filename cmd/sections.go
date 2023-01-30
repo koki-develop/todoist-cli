@@ -95,3 +95,32 @@ var sectionsCreateCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var sectionsUpdateCmd = &cobra.Command{
+	Use:   "update <SECTION_ID>",
+	Short: "Update a section",
+	Long:  "Update a section.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		p := &todoistapi.UpdateSectionParameters{
+			Name: *flagSectionNameForUpdate.Get(cmd, false),
+		}
+		sec, err := client.UpdateSection(id, p)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(sec)
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}
