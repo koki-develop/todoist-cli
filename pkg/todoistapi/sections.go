@@ -58,3 +58,21 @@ func (cl *Client) CreateSection(p *CreateSectionParameters) (*models.Section, er
 
 	return &sec, nil
 }
+
+type UpdateSectionParameters struct {
+	Name string `json:"name"`
+}
+
+func (cl *Client) UpdateSection(id string, p *UpdateSectionParameters) (*models.Section, error) {
+	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("sections/%s", id), nil, p)
+	if err != nil {
+		return nil, err
+	}
+
+	var sec models.Section
+	if err := cl.doRequest(req, &sec); err != nil {
+		return nil, err
+	}
+
+	return &sec, nil
+}
