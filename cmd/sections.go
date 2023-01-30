@@ -39,9 +39,36 @@ var sectionsListCmd = &cobra.Command{
 	},
 }
 
+var sectionsGetCmd = &cobra.Command{
+	Use:   "get <SECTION_ID>",
+	Short: "Get a section",
+	Long:  "Get a section.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		sec, err := client.GetSection(id)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(sec)
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(sectionsCmd)
 	sectionsCmd.AddCommand(
 		sectionsListCmd,
+		sectionsGetCmd,
 	)
 }

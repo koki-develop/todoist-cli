@@ -1,6 +1,7 @@
 package todoistapi
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/koki-develop/todoist-cli/pkg/models"
@@ -22,4 +23,18 @@ func (cl *Client) ListSections(p *ListSectionsParameters) (models.Sections, erro
 	}
 
 	return secs, nil
+}
+
+func (cl *Client) GetSection(id string) (*models.Section, error) {
+	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("sections/%s", id), nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var sec models.Section
+	if err := cl.doRequest(req, &sec); err != nil {
+		return nil, err
+	}
+
+	return &sec, nil
 }

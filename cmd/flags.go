@@ -85,6 +85,7 @@ func init() {
 		projectsDeleteCmd,
 		// sections
 		sectionsListCmd,
+		sectionsGetCmd,
 	)
 
 	// -f, --format
@@ -97,6 +98,7 @@ func init() {
 		projectsUpdateCmd,
 		// sections
 		sectionsListCmd,
+		sectionsGetCmd,
 	)
 
 	/*
