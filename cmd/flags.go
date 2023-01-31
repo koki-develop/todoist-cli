@@ -98,3 +98,54 @@ var (
 		},
 	}
 )
+
+// flags for tasks list
+var (
+	// --project-id
+	flagTasksListProjectID = &flags.String{
+		Flag: &flags.Flag{
+			Name:        "project-id",
+			Description: "filter tasks by project id",
+		},
+	}
+
+	// --section-id
+	flagTasksListSectionID = &flags.String{
+		Flag: &flags.Flag{
+			Name:        "section-id",
+			Description: "filter tasks by section id",
+		},
+	}
+
+	// --label
+	flagTasksListLabel = &flags.String{
+		Flag: &flags.Flag{
+			Name:        "label",
+			Description: "filter tasks by label name",
+		},
+	}
+
+	// --filter
+	flagTasksListFilter = &flags.String{
+		Flag: &flags.Flag{
+			Name:        "filter",
+			Description: "filter by any supported filter",
+		},
+	}
+
+	// --lang
+	flagTasksListLang = &flags.String{
+		Flag: &flags.Flag{
+			Name:        "lang",
+			Description: "IETF language tag defining what language filter is written in, if differs from default English",
+		},
+	}
+
+	// --ids
+	flagTasksListIDs = &flags.Strings{
+		Flag: &flags.Flag{
+			Name:        "ids",
+			Description: "a list of the task ids to retrieve",
+		},
+	}
+)

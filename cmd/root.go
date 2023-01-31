@@ -67,55 +67,65 @@ func init() {
 		sectionsDeleteCmd,
 	)
 
+	// tasks
+	rootCmd.AddCommand(tasksCmd)
+	tasksCmd.AddCommand(
+		tasksListCmd,
+	)
+
 	/*
-	 * flags
+	 * basic flags
 	 */
 
 	// --api-token
 	flagAPIToken.Add(configureCmd)
 	flagAPIToken.Add(projectsCmd.Commands()...)
 	flagAPIToken.Add(sectionsCmd.Commands()...)
+	flagAPIToken.Add(tasksCmd.Commands()...)
 
 	// -f, --format
 	flagFormat.Add(configureCmd)
 	flagFormat.Add(projectsCmd.Commands()...)
 	flagFormat.Add(sectionsCmd.Commands()...)
+	flagFormat.Add(tasksCmd.Commands()...)
+
+	/*
+	 * project flags
+	 */
 
 	// --parent-id
-	flagProjectParentID.Add(
-		projectsCreateCmd,
-	)
+	flagProjectParentID.Add(projectsCreateCmd)
 
 	// --color
-	flagProjectColor.Add(
-		projectsCreateCmd,
-		projectsUpdateCmd,
-	)
+	flagProjectColor.Add(projectsCreateCmd, projectsUpdateCmd)
 
 	// --favorite
-	flagProjectFavorite.Add(
-		projectsCreateCmd,
-		projectsUpdateCmd,
-	)
+	flagProjectFavorite.Add(projectsCreateCmd, projectsUpdateCmd)
 
 	// --name
-	flagProjectName.Add(
-		projectsUpdateCmd,
-	)
-	flagSectionNameForUpdate.Add(
-		sectionsUpdateCmd,
-	)
+	flagProjectName.Add(projectsUpdateCmd)
+	/*
+	 * section flags
+	 */
+
+	// --name
+	flagSectionNameForUpdate.Add(sectionsUpdateCmd)
 
 	// --project-id
-	flagSectionProjectID.Add(
-		sectionsListCmd,
-	)
-	flagSectionProjectIDForCreate.Add(
-		sectionsCreateCmd,
-	)
+	flagSectionProjectID.Add(sectionsListCmd)
+	flagSectionProjectIDForCreate.Add(sectionsCreateCmd)
 
 	// --order
-	flagSectionOrder.Add(
-		sectionsCreateCmd,
-	)
+	flagSectionOrder.Add(sectionsCreateCmd)
+
+	/*
+	 * task flags
+	 */
+
+	flagTasksListProjectID.Add(tasksListCmd)
+	flagTasksListSectionID.Add(tasksListCmd)
+	flagTasksListLabel.Add(tasksListCmd)
+	flagTasksListFilter.Add(tasksListCmd)
+	flagTasksListLang.Add(tasksListCmd)
+	flagTasksListIDs.Add(tasksListCmd)
 }
