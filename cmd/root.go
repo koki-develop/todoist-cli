@@ -93,35 +93,35 @@ func init() {
 	 * project flags
 	 */
 
-	// --parent-id
-	flagProjectParentID.Add(projectsCreateCmd)
+	// create
+	flagProjectsCreateParentID.Add(projectsCreateCmd)
+	flagProjectsCreateColor.Add(projectsCreateCmd)
+	flagProjectsCreateFavorite.Add(projectsCreateCmd)
 
-	// --color
-	flagProjectColor.Add(projectsCreateCmd, projectsUpdateCmd)
+	// update
+	flagProjectsUpdateColor.Add(projectsUpdateCmd)
+	flagProjectsUpdateFavorite.Add(projectsUpdateCmd)
+	flagProjectsUpdateName.Add(projectsUpdateCmd)
 
-	// --favorite
-	flagProjectFavorite.Add(projectsCreateCmd, projectsUpdateCmd)
-
-	// --name
-	flagProjectName.Add(projectsUpdateCmd)
 	/*
 	 * section flags
 	 */
 
-	// --name
-	flagSectionNameForUpdate.Add(sectionsUpdateCmd)
+	// list
+	flagSectionsListProjectID.Add(sectionsListCmd)
 
-	// --project-id
-	flagSectionProjectID.Add(sectionsListCmd)
-	flagSectionProjectIDForCreate.Add(sectionsCreateCmd)
+	// create
+	flagSectionsCreateProjectID.Add(sectionsCreateCmd)
+	flagSectionsCreateOrder.Add(sectionsCreateCmd)
 
-	// --order
-	flagSectionOrder.Add(sectionsCreateCmd)
+	// update
+	flagSectionsUpdateName.Add(sectionsUpdateCmd)
 
 	/*
 	 * task flags
 	 */
 
+	// list
 	flagTasksListProjectID.Add(tasksListCmd)
 	flagTasksListSectionID.Add(tasksListCmd)
 	flagTasksListLabel.Add(tasksListCmd)

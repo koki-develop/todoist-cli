@@ -75,9 +75,9 @@ var projectsCreateCmd = &cobra.Command{
 
 		p := &todoistapi.CreateProjectParameters{
 			Name:       name,
-			ParentID:   flagProjectParentID.Get(cmd, true),
-			IsFavorite: flagProjectFavorite.Get(cmd, true),
-			Color:      flagProjectColor.Get(cmd, true),
+			ParentID:   flagProjectsCreateParentID.Get(cmd, true),
+			IsFavorite: flagProjectsCreateFavorite.Get(cmd, true),
+			Color:      flagProjectsCreateColor.Get(cmd, true),
 		}
 
 		proj, err := client.CreateProject(p)
@@ -107,9 +107,9 @@ var projectsUpdateCmd = &cobra.Command{
 		}
 
 		p := &todoistapi.UpdateProjectParameters{
-			Name:       flagProjectName.Get(cmd, true),
-			Color:      flagProjectColor.Get(cmd, true),
-			IsFavorite: flagProjectFavorite.Get(cmd, true),
+			Name:       flagProjectsUpdateName.Get(cmd, true),
+			Color:      flagProjectsCreateColor.Get(cmd, true),
+			IsFavorite: flagProjectsCreateFavorite.Get(cmd, true),
 		}
 
 		proj, err := client.UpdateProject(id, p)
