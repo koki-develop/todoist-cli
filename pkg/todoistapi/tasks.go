@@ -1,7 +1,6 @@
 package todoistapi
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/koki-develop/todoist-cli/pkg/models"
@@ -21,7 +20,6 @@ func (cl *Client) ListTasks(p *ListTasksParameters) (models.Tasks, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(req.URL.String())
 
 	var ts models.Tasks
 	if err := cl.doRequest(req, &ts); err != nil {
