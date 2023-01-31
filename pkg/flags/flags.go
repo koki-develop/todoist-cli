@@ -21,6 +21,12 @@ type String struct {
 	value   string
 }
 
+type Strings struct {
+	*Flag
+	Default []string
+	value   []string
+}
+
 type Bool struct {
 	*Flag
 	Default bool
@@ -47,6 +53,22 @@ func (f *String) Get(cmd *cobra.Command, nullable bool) *string {
 		return nil
 	}
 	return &f.value
+}
+
+func (f *Strings) Add(cmds ...*cobra.Command) {
+	for _, cmd := range cmds {
+		cmd.Flags().StringSliceVarP(&f.value, f.Name, f.ShortName, f.Default, f.Description)
+		if f.Required {
+			_ = cmd.MarkFlagRequired(f.Name)
+		}
+	}
+}
+
+func (f Strings) Get(cmd *cobra.Command, nullable bool) []string {
+	if nullable && !f.Changed(cmd) {
+		return nil
+	}
+	return f.value
 }
 
 func (f *Bool) Add(cmds ...*cobra.Command) {
