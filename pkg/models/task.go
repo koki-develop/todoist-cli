@@ -5,6 +5,7 @@ import (
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/koki-develop/todoist-cli/pkg/renderer"
+	"github.com/koki-develop/todoist-cli/pkg/util"
 )
 
 var (
@@ -43,13 +44,7 @@ func (t Task) due() string {
 }
 
 func (t Task) labels() []string {
-	labels := t["labels"].([]interface{})
-	rtn := make([]string, len(labels))
-	for i, l := range labels {
-		rtn[i] = l.(string)
-	}
-
-	return rtn
+	return util.InterfacesToStrings(t["labels"].([]interface{}))
 }
 
 func (t Task) TableRows() []table.Row {
