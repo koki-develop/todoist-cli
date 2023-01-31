@@ -43,3 +43,29 @@ var tasksListCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var tasksGetCmd = &cobra.Command{
+	Use:   "get <TASK_ID>",
+	Short: "Get an active task",
+	Long:  "Get an active task.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		t, err := client.GetTask(id)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(t)
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}

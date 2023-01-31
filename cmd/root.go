@@ -71,6 +71,7 @@ func init() {
 	rootCmd.AddCommand(tasksCmd)
 	tasksCmd.AddCommand(
 		tasksListCmd,
+		tasksGetCmd,
 	)
 
 	/*
