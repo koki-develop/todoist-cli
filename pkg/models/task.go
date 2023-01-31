@@ -8,29 +8,11 @@ import (
 )
 
 var (
-	_ renderer.Formattable = (*Task)(nil)
+	_ renderer.Formattable = (Task)(nil)
 	_ renderer.Formattable = (Tasks)(nil)
 )
 
-type Task struct {
-	ID           *string  `json:"id"`
-	AssignerID   *string  `json:"assigner_id"`
-	AssigneeID   *string  `json:"assignee_id"`
-	ProjectID    *string  `json:"project_id"`
-	SectionID    *string  `json:"section_id"`
-	ParentID     *string  `json:"parent_id"`
-	Order        *int     `json:"order"`
-	Content      *string  `json:"content"`
-	Description  *string  `json:"description"`
-	IsCompleted  *bool    `json:"is_completed"`
-	Labels       []string `json:"labels"`
-	Priority     *int     `json:"priority"`
-	CommentCount *int     `json:"comment_count"`
-	CreatorID    *string  `json:"creator_id"`
-	CreatedAt    *string  `json:"created_at"`
-	Due          *TaskDue `json:"due"`
-	URL          *string  `json:"url"`
-}
+type Task map[string]interface{}
 
 type TaskDue struct {
 	Date        *string `json:"date"`
@@ -40,25 +22,38 @@ type TaskDue struct {
 	Timezone    *string `json:"timezone"`
 }
 
-type Tasks []*Task
+type Tasks []Task
 
 var taskTableHeader table.Row = table.Row{"ID", "CONTENT", "DUE", "LABELS", "URL"}
 
-func (*Task) TableHeader() table.Row {
+func (Task) TableHeader() table.Row {
 	return taskTableHeader
 }
 
-func (t *Task) TableRows() []table.Row {
-	var d string = ""
-	if t.Due != nil {
-		if t.Due.Datetime != nil {
-			d = *t.Due.Datetime
+func (t Task) due() string {
+	if due, ok := t["due"].(map[string]interface{}); ok && due != nil {
+		if dt := due["datetime"]; dt != nil {
+			return dt.(string)
 		} else {
-			d = *t.Due.Date
+			return due["date"].(string)
 		}
 	}
 
-	return []table.Row{{*t.ID, *t.Content, d, strings.Join(t.Labels, ", "), *t.URL}}
+	return ""
+}
+
+func (t Task) labels() []string {
+	labels := t["labels"].([]interface{})
+	rtn := make([]string, len(labels))
+	for i, l := range labels {
+		rtn[i] = l.(string)
+	}
+
+	return rtn
+}
+
+func (t Task) TableRows() []table.Row {
+	return []table.Row{{t["id"], t["content"], t.due(), strings.Join(t.labels(), ", "), t["url"]}}
 }
 
 func (Tasks) TableHeader() table.Row {

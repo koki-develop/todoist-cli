@@ -6,35 +6,21 @@ import (
 )
 
 var (
-	_ renderer.Formattable = (*Project)(nil)
+	_ renderer.Formattable = (Project)(nil)
 	_ renderer.Formattable = (Projects)(nil)
 )
 
-type Project struct {
-	ID             *string `json:"id"`
-	ParentID       *string `json:"parent_id"`
-	Order          *int    `json:"order"`
-	Color          *string `json:"color"`
-	Name           *string `json:"name"`
-	CommentCount   *int    `json:"comment_count"`
-	IsShared       *bool   `json:"is_shared"`
-	IsFavorite     *bool   `json:"is_favorite"`
-	IsInboxProject *bool   `json:"is_inbox_project"`
-	IsTeamInbox    *bool   `json:"is_team_inbox"`
-	URL            *string `json:"url"`
-	ViewStyle      *string `json:"view_style"`
-}
-
-type Projects []*Project
+type Project map[string]interface{}
+type Projects []Project
 
 var projectTableHeader table.Row = table.Row{"ID", "NAME", "VIEW_STYLE", "URL"}
 
-func (*Project) TableHeader() table.Row {
+func (Project) TableHeader() table.Row {
 	return projectTableHeader
 }
 
-func (proj *Project) TableRows() []table.Row {
-	return []table.Row{{*proj.ID, *proj.Name, *proj.ViewStyle, *proj.URL}}
+func (proj Project) TableRows() []table.Row {
+	return []table.Row{{proj["id"], proj["name"], proj["view_style"], proj["url"]}}
 }
 
 func (Projects) TableHeader() table.Row {

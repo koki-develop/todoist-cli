@@ -6,27 +6,22 @@ import (
 )
 
 var (
-	_ renderer.Formattable = (*Section)(nil)
+	_ renderer.Formattable = (Section)(nil)
 	_ renderer.Formattable = (Sections)(nil)
 )
 
-type Section struct {
-	ID        *string `json:"id"`
-	ProjectID *string `json:"project_id"`
-	Order     *int    `json:"order"`
-	Name      *string `json:"name"`
-}
+type Section map[string]interface{}
 
-type Sections []*Section
+type Sections []Section
 
 var sectionTableHeader table.Row = table.Row{"ID", "NAME", "PROJECT_ID"}
 
-func (*Section) TableHeader() table.Row {
+func (Section) TableHeader() table.Row {
 	return sectionTableHeader
 }
 
-func (sec *Section) TableRows() []table.Row {
-	return []table.Row{{*sec.ID, *sec.Name, *sec.ProjectID}}
+func (sec Section) TableRows() []table.Row {
+	return []table.Row{{sec["id"], sec["name"], sec["project_id"]}}
 }
 
 func (Sections) TableHeader() table.Row {
