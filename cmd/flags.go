@@ -214,3 +214,60 @@ var (
 		Description: "the responsible user id",
 	}}
 )
+
+// flags for tasks update
+var (
+	// --content
+	flagTasksUpdateContent = &flags.String{Flag: &flags.Flag{
+		Name:        "content",
+		Description: "task content",
+	}}
+
+	// --description
+	flagTasksUpdateDescription = &flags.String{Flag: &flags.Flag{
+		Name:        "description",
+		Description: "a description for the task",
+	}}
+
+	// --labels
+	flagTasksUpdateLabels = &flags.Strings{Flag: &flags.Flag{
+		Name:        "labels",
+		Description: "the task's labels",
+	}}
+
+	// --priority
+	flagTasksUpdatePriority = &flags.Int{Flag: &flags.Flag{
+		Name:        "priority",
+		Description: "task priority 1 to 4",
+	}}
+
+	// --due-string
+	flagTasksUpdateDueString = &flags.String{Flag: &flags.Flag{
+		Name:        "due-string",
+		Description: "human defined task due tate",
+	}}
+
+	// --due-date
+	flagTasksUpdateDueDate = &flags.String{Flag: &flags.Flag{
+		Name:        "due-date",
+		Description: "specific date in YYYY-MM-DD format relative to user's timezone",
+	}}
+
+	// --due-datetime
+	flagTasksUpdateDueDatetime = &flags.String{Flag: &flags.Flag{
+		Name:        "due-datetime",
+		Description: "specific date and time in RFC3339 format in UTC",
+	}}
+
+	// --due-lang
+	flagTasksUpdateDueLang = &flags.String{Flag: &flags.Flag{
+		Name:        "due-lang",
+		Description: "2-letter code specifying language in case `due_string` is not written in English",
+	}}
+
+	// --assignee-id
+	flagTasksUpdateAssigneeID = &flags.String{Flag: &flags.Flag{
+		Name:        "assignee-id",
+		Description: "the responsible user id",
+	}}
+)

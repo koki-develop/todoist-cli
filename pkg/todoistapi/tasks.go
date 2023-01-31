@@ -73,3 +73,29 @@ func (cl *Client) CreateTask(p *CreateTaskParameters) (*models.Task, error) {
 
 	return &t, nil
 }
+
+type UpdateTaskParameters struct {
+	Content     *string  `json:"content,omitempty"`
+	Description *string  `json:"description,omitempty"`
+	Labels      []string `json:"labels,omitempty"`
+	Priority    *int     `json:"priority,omitempty"`
+	DueString   *string  `json:"due_string,omitempty"`
+	DueDate     *string  `json:"due_date,omitempty"`
+	DueDatetime *string  `json:"due_datetime,omitempty"`
+	DueLang     *string  `json:"due_lang,omitempty"`
+	AssigneeID  *string  `json:"assignee_id,omitempty"`
+}
+
+func (cl *Client) UpdateTask(id string, p *UpdateTaskParameters) (*models.Task, error) {
+	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("tasks/%s", id), nil, p)
+	if err != nil {
+		return nil, err
+	}
+
+	var t models.Task
+	if err := cl.doRequest(req, &t); err != nil {
+		return nil, err
+	}
+
+	return &t, nil
+}

@@ -73,6 +73,7 @@ func init() {
 		tasksListCmd,
 		tasksGetCmd,
 		tasksCreateCmd,
+		tasksUpdateCmd,
 	)
 
 	/*
@@ -144,4 +145,15 @@ func init() {
 	flagTasksCreateDueDatetime.Add(tasksCreateCmd)
 	flagTasksCreateDueLang.Add(tasksCreateCmd)
 	flagTasksCreateAssigneeID.Add(tasksCreateCmd)
+
+	// update
+	flagTasksUpdateContent.Add(tasksUpdateCmd)
+	flagTasksUpdateDescription.Add(tasksUpdateCmd)
+	flagTasksUpdateLabels.Add(tasksUpdateCmd)
+	flagTasksUpdatePriority.Add(tasksUpdateCmd)
+	flagTasksUpdateDueString.Add(tasksUpdateCmd)
+	flagTasksUpdateDueDate.Add(tasksUpdateCmd)
+	flagTasksUpdateDueDatetime.Add(tasksUpdateCmd)
+	flagTasksUpdateDueLang.Add(tasksUpdateCmd)
+	flagTasksUpdateAssigneeID.Add(tasksUpdateCmd)
 }

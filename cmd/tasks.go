@@ -110,3 +110,40 @@ var tasksCreateCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var tasksUpdateCmd = &cobra.Command{
+	Use:   "update <TASK_ID>",
+	Short: "Update a task",
+	Long:  "Update a task.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		p := &todoistapi.UpdateTaskParameters{
+			Content:     flagTasksUpdateContent.Get(cmd, true),
+			Description: flagTasksUpdateDescription.Get(cmd, true),
+			Labels:      flagTasksUpdateLabels.Get(cmd, true),
+			Priority:    flagTasksUpdatePriority.Get(cmd, true),
+			DueString:   flagTasksUpdateDueString.Get(cmd, true),
+			DueDate:     flagTasksUpdateDueDate.Get(cmd, true),
+			DueDatetime: flagTasksUpdateDueDatetime.Get(cmd, true),
+			DueLang:     flagTasksUpdateDueLang.Get(cmd, true),
+			AssigneeID:  flagTasksUpdateAssigneeID.Get(cmd, true),
+		}
+		t, err := client.UpdateTask(id, p)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(t)
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}
