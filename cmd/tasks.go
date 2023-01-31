@@ -45,7 +45,7 @@ var tasksListCmd = &cobra.Command{
 }
 
 var tasksGetCmd = &cobra.Command{
-	Use:   "get <TASK_ID>",
+	Use:   "get TASK_ID",
 	Short: "Get an active task",
 	Long:  "Get an active task.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
@@ -71,7 +71,7 @@ var tasksGetCmd = &cobra.Command{
 }
 
 var tasksCreateCmd = &cobra.Command{
-	Use:   "create <TASK_CONTENT>",
+	Use:   "create TASK_CONTENT",
 	Short: "Create a task",
 	Long:  "Create a task.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
@@ -112,7 +112,7 @@ var tasksCreateCmd = &cobra.Command{
 }
 
 var tasksUpdateCmd = &cobra.Command{
-	Use:   "update <TASK_ID>",
+	Use:   "update TASK_ID",
 	Short: "Update a task",
 	Long:  "Update a task.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
@@ -149,7 +149,7 @@ var tasksUpdateCmd = &cobra.Command{
 }
 
 var tasksDeleteCmd = &cobra.Command{
-	Use:   "delete <TASK_ID>",
+	Use:   "delete TASK_ID",
 	Short: "Delete a task",
 	Long:  "Delete a task.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
@@ -169,7 +169,7 @@ var tasksDeleteCmd = &cobra.Command{
 }
 
 var tasksCloseCmd = &cobra.Command{
-	Use:   "close <TASK_ID>",
+	Use:   "close TASK_ID",
 	Short: "Close a task",
 	Long:  "Close a task.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
@@ -189,7 +189,7 @@ var tasksCloseCmd = &cobra.Command{
 }
 
 var tasksReopenCmd = &cobra.Command{
-	Use:   "reopen <TASK_ID>",
+	Use:   "reopen TASK_ID",
 	Short: "reopen a task",
 	Long:  "reopen a task.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),

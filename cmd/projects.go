@@ -37,7 +37,7 @@ var projectsListCmd = &cobra.Command{
 }
 
 var projectsGetCmd = &cobra.Command{
-	Use:   "get <PROJECT_ID>",
+	Use:   "get PROJECT_ID",
 	Short: "Get a project",
 	Long:  "Get a project.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
@@ -62,7 +62,7 @@ var projectsGetCmd = &cobra.Command{
 }
 
 var projectsCreateCmd = &cobra.Command{
-	Use:   "create <PROJECT_NAME>",
+	Use:   "create PROJECT_NAME",
 	Short: "Create a project",
 	Long:  "Create a project.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
@@ -95,7 +95,7 @@ var projectsCreateCmd = &cobra.Command{
 }
 
 var projectsUpdateCmd = &cobra.Command{
-	Use:   "update <PROJECT_ID>",
+	Use:   "update PROJECT_ID",
 	Short: "Update a project",
 	Long:  "Update a project.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
@@ -127,7 +127,7 @@ var projectsUpdateCmd = &cobra.Command{
 }
 
 var projectsDeleteCmd = &cobra.Command{
-	Use:   "delete <PROJECT_ID>",
+	Use:   "delete PROJECT_ID",
 	Short: "Delete a project",
 	Long:  "Delete a project.",
 	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
