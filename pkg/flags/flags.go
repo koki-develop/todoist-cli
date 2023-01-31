@@ -70,11 +70,11 @@ func (f *Strings) Add(cmds ...*cobra.Command) {
 	}
 }
 
-func (f Strings) Get(cmd *cobra.Command, nullable bool) []string {
+func (f Strings) Get(cmd *cobra.Command, nullable bool) *[]string {
 	if nullable && !f.Changed(cmd) {
 		return nil
 	}
-	return f.value
+	return &f.value
 }
 
 func (f *Bool) Add(cmds ...*cobra.Command) {
@@ -118,9 +118,9 @@ func (f *Ints) Add(cmds ...*cobra.Command) {
 	}
 }
 
-func (f Ints) Get(cmd *cobra.Command, nullable bool) []int {
+func (f Ints) Get(cmd *cobra.Command, nullable bool) *[]int {
 	if nullable && !f.Changed(cmd) {
 		return nil
 	}
-	return f.value
+	return &f.value
 }

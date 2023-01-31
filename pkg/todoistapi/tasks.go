@@ -13,7 +13,7 @@ type ListTasksParameters struct {
 	Label     *string `url:"label,omitempty"`
 	Filter    *string `url:"filter,omitempty"`
 	Lang      *string `url:"lang,omitempty"`
-	IDs       []int   `url:"ids,comma,omitempty"`
+	IDs       *[]int  `url:"ids,comma,omitempty"`
 }
 
 func (cl *Client) ListTasks(p *ListTasksParameters) (models.Tasks, error) {
@@ -45,19 +45,19 @@ func (cl *Client) GetTask(id string) (*models.Task, error) {
 }
 
 type CreateTaskParameters struct {
-	Content     *string  `json:"content,omitempty"`
-	Description *string  `json:"description,omitempty"`
-	ProjectID   *string  `json:"project_id,omitempty"`
-	SectionID   *string  `json:"section_id,omitempty"`
-	ParentID    *string  `json:"parent_id,omitempty"`
-	Order       *int     `json:"order,omitempty"`
-	Labels      []string `json:"labels,omitempty"`
-	Priority    *int     `json:"priority,omitempty"`
-	DueString   *string  `json:"due_string,omitempty"`
-	DueDate     *string  `json:"due_date,omitempty"`
-	DueDatetime *string  `json:"due_datetime,omitempty"`
-	DueLang     *string  `json:"due_lang,omitempty"`
-	AssigneeID  *string  `json:"assignee_id,omitempty"`
+	Content     *string   `json:"content,omitempty"`
+	Description *string   `json:"description,omitempty"`
+	ProjectID   *string   `json:"project_id,omitempty"`
+	SectionID   *string   `json:"section_id,omitempty"`
+	ParentID    *string   `json:"parent_id,omitempty"`
+	Order       *int      `json:"order,omitempty"`
+	Labels      *[]string `json:"labels,omitempty"`
+	Priority    *int      `json:"priority,omitempty"`
+	DueString   *string   `json:"due_string,omitempty"`
+	DueDate     *string   `json:"due_date,omitempty"`
+	DueDatetime *string   `json:"due_datetime,omitempty"`
+	DueLang     *string   `json:"due_lang,omitempty"`
+	AssigneeID  *string   `json:"assignee_id,omitempty"`
 }
 
 func (cl *Client) CreateTask(p *CreateTaskParameters) (*models.Task, error) {
@@ -75,15 +75,15 @@ func (cl *Client) CreateTask(p *CreateTaskParameters) (*models.Task, error) {
 }
 
 type UpdateTaskParameters struct {
-	Content     *string  `json:"content,omitempty"`
-	Description *string  `json:"description,omitempty"`
-	Labels      []string `json:"labels,omitempty"`
-	Priority    *int     `json:"priority,omitempty"`
-	DueString   *string  `json:"due_string,omitempty"`
-	DueDate     *string  `json:"due_date,omitempty"`
-	DueDatetime *string  `json:"due_datetime,omitempty"`
-	DueLang     *string  `json:"due_lang,omitempty"`
-	AssigneeID  *string  `json:"assignee_id,omitempty"`
+	Content     *string   `json:"content,omitempty"`
+	Description *string   `json:"description,omitempty"`
+	Labels      *[]string `json:"labels,omitempty"`
+	Priority    *int      `json:"priority,omitempty"`
+	DueString   *string   `json:"due_string,omitempty"`
+	DueDate     *string   `json:"due_date,omitempty"`
+	DueDatetime *string   `json:"due_datetime,omitempty"`
+	DueLang     *string   `json:"due_lang,omitempty"`
+	AssigneeID  *string   `json:"assignee_id,omitempty"`
 }
 
 func (cl *Client) UpdateTask(id string, p *UpdateTaskParameters) (*models.Task, error) {
