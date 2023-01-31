@@ -147,3 +147,63 @@ var tasksUpdateCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var tasksDeleteCmd = &cobra.Command{
+	Use:   "delete <TASK_ID>",
+	Short: "Delete a task",
+	Long:  "Delete a task.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		if err := client.DeleteTask(id); err != nil {
+			return err
+		}
+
+		return nil
+	},
+}
+
+var tasksCloseCmd = &cobra.Command{
+	Use:   "close <TASK_ID>",
+	Short: "Close a task",
+	Long:  "Close a task.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		if err := client.CloseTask(id); err != nil {
+			return err
+		}
+
+		return nil
+	},
+}
+
+var tasksReopenCmd = &cobra.Command{
+	Use:   "reopen <TASK_ID>",
+	Short: "reopen a task",
+	Long:  "reopen a task.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		if err := client.ReopenTask(id); err != nil {
+			return err
+		}
+
+		return nil
+	},
+}

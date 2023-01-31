@@ -74,6 +74,9 @@ func init() {
 		tasksGetCmd,
 		tasksCreateCmd,
 		tasksUpdateCmd,
+		tasksDeleteCmd,
+		tasksCloseCmd,
+		tasksReopenCmd,
 	)
 
 	/*
