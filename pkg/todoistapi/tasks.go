@@ -99,3 +99,42 @@ func (cl *Client) UpdateTask(id string, p *UpdateTaskParameters) (*models.Task, 
 
 	return &t, nil
 }
+
+func (cl *Client) DeleteTask(id string) error {
+	req, err := cl.newRequest(http.MethodDelete, fmt.Sprintf("tasks/%s", id), nil, nil)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (cl *Client) CloseTask(id string) error {
+	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("tasks/%s/close", id), nil, nil)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (cl *Client) ReopenTask(id string) error {
+	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("tasks/%s/reopen", id), nil, nil)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}
