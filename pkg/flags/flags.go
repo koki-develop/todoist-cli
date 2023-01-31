@@ -39,6 +39,12 @@ type Int struct {
 	value   int
 }
 
+type Ints struct {
+	*Flag
+	Default []int
+	value   []int
+}
+
 func (f *String) Add(cmds ...*cobra.Command) {
 	for _, cmd := range cmds {
 		cmd.Flags().StringVarP(&f.value, f.Name, f.ShortName, f.Default, f.Description)
@@ -101,4 +107,20 @@ func (f *Int) Get(cmd *cobra.Command, nullable bool) *int {
 		return nil
 	}
 	return &f.value
+}
+
+func (f *Ints) Add(cmds ...*cobra.Command) {
+	for _, cmd := range cmds {
+		cmd.Flags().IntSliceVarP(&f.value, f.Name, f.ShortName, f.Default, f.Description)
+		if f.Required {
+			_ = cmd.MarkFlagRequired(f.Name)
+		}
+	}
+}
+
+func (f Ints) Get(cmd *cobra.Command, nullable bool) []int {
+	if nullable && !f.Changed(cmd) {
+		return nil
+	}
+	return f.value
 }
