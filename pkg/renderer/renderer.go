@@ -3,6 +3,7 @@ package renderer
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -77,12 +78,7 @@ func (r *Renderer) newTable(f Formattable, cols []string) (table.Writer, error) 
 		row := table.Row{}
 
 		for _, col := range cols {
-			v := m[col]
-			if v != nil {
-				row = append(row, v)
-			} else {
-				row = append(row, "")
-			}
+			row = append(row, r.renderColumn(m[col]))
 		}
 
 		rows = append(rows, row)
@@ -90,6 +86,25 @@ func (r *Renderer) newTable(f Formattable, cols []string) (table.Writer, error) 
 	t.AppendRows(rows)
 
 	return t, nil
+}
+
+func (r *Renderer) renderColumn(v interface{}) string {
+	if v == nil {
+		return ""
+	}
+
+	rt := reflect.TypeOf(v)
+	switch rt.Kind() {
+	case reflect.Slice:
+		s := reflect.ValueOf(v)
+		cols := make([]string, s.Len())
+		for i := 0; i < s.Len(); i++ {
+			cols[i] = r.renderColumn(s.Index(i))
+		}
+		return strings.Join(cols, ", ")
+	default:
+		return fmt.Sprint(v)
+	}
 }
 
 func (r *Renderer) renderTable(f Formattable, cols []string) (string, error) {
