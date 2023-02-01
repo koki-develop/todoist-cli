@@ -77,8 +77,8 @@ func (r *Renderer) newTable(f Formattable, cols []string) (table.Writer, error) 
 		row := table.Row{}
 
 		for _, col := range cols {
-			v, ok := m[col]
-			if ok {
+			v := m[col]
+			if v != nil {
 				row = append(row, v)
 			} else {
 				row = append(row, "")
