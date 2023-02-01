@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/koki-develop/todoist-cli/pkg/renderer"
+	"github.com/koki-develop/todoist-cli/pkg/util"
 )
 
 var (
@@ -13,7 +14,22 @@ type Task map[string]interface{}
 type Tasks []Task
 
 func (t Task) Maps() []map[string]interface{} {
-	return []map[string]interface{}{t}
+	m := util.CloneMap(t)
+	m["due"] = t.due()
+	return []map[string]interface{}{m}
+}
+
+func (t Task) due() string {
+	d, ok := t["due"].(map[string]interface{})
+	if !ok || d == nil {
+		return ""
+	}
+
+	if dt := d["datetime"]; dt != nil {
+		return dt.(string)
+	} else {
+		return d["date"].(string)
+	}
 }
 
 func (ts Tasks) Maps() []map[string]interface{} {

@@ -102,6 +102,8 @@ func (r *Renderer) renderColumn(v interface{}) string {
 			cols[i] = r.renderColumn(s.Index(i))
 		}
 		return strings.Join(cols, ", ")
+	case reflect.Map:
+		return fmt.Sprintf("%#v", v)
 	default:
 		return fmt.Sprint(v)
 	}
