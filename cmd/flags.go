@@ -45,6 +45,26 @@ var (
 	}}
 )
 
+// flags for columns
+var (
+	flagColumns = &flags.Flag{Name: "columns", Description: "table columns"}
+
+	// project
+	flagColumnsProject = &flags.Strings{Flag: flagColumns,
+		Default: []string{"id", "name"},
+	}
+
+	// section
+	flagColumnsSection = &flags.Strings{Flag: flagColumns,
+		Default: []string{"id", "name", "project_id"},
+	}
+
+	// task
+	flagColumnsTask = &flags.Strings{Flag: flagColumns,
+		Default: []string{"id", "content", "labels", "project_id", "section_id"},
+	}
+)
+
 // flags for projects update
 var (
 	// --name

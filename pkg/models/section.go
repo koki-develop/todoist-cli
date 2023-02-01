@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/koki-develop/todoist-cli/pkg/renderer"
 )
 
@@ -11,27 +10,16 @@ var (
 )
 
 type Section map[string]interface{}
-
 type Sections []Section
 
-var sectionTableHeader table.Row = table.Row{"ID", "NAME", "PROJECT_ID"}
-
-func (Section) TableHeader() table.Row {
-	return sectionTableHeader
+func (sec Section) Maps() []map[string]interface{} {
+	return []map[string]interface{}{sec}
 }
 
-func (sec Section) TableRows() []table.Row {
-	return []table.Row{{sec["id"], sec["name"], sec["project_id"]}}
-}
-
-func (Sections) TableHeader() table.Row {
-	return sectionTableHeader
-}
-
-func (secs Sections) TableRows() []table.Row {
-	rows := []table.Row{}
-	for _, sec := range secs {
-		rows = append(rows, sec.TableRows()...)
+func (secs Sections) Maps() []map[string]interface{} {
+	maps := make([]map[string]interface{}, len(secs))
+	for i, s := range secs {
+		maps[i] = s.Maps()[0]
 	}
-	return rows
+	return maps
 }

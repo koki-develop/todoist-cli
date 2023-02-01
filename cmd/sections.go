@@ -30,7 +30,7 @@ var sectionsListCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(secs)
+		o, err := rdr.Render(secs, *flagColumnsSection.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -56,7 +56,7 @@ var sectionsGetCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(sec)
+		o, err := rdr.Render(sec, *flagColumnsSection.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -87,7 +87,7 @@ var sectionsCreateCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(sec)
+		o, err := rdr.Render(sec, *flagColumnsSection.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -116,7 +116,7 @@ var sectionsUpdateCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(sec)
+		o, err := rdr.Render(sec, *flagColumnsSection.Get(cmd, false))
 		if err != nil {
 			return err
 		}

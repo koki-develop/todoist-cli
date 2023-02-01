@@ -35,7 +35,7 @@ var tasksListCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(ts)
+		o, err := rdr.Render(ts, *flagColumnsTask.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -61,7 +61,7 @@ var tasksGetCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(t)
+		o, err := rdr.Render(t, *flagColumnsTask.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -102,7 +102,7 @@ var tasksCreateCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(t)
+		o, err := rdr.Render(t, *flagColumnsTask.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -139,7 +139,7 @@ var tasksUpdateCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(t)
+		o, err := rdr.Render(t, *flagColumnsTask.Get(cmd, false))
 		if err != nil {
 			return err
 		}

@@ -7,3 +7,11 @@ func InterfacesToStrings(is []interface{}) []string {
 	}
 	return ss
 }
+
+func StringsToInterfaces(ss []string) []interface{} {
+	is := make([]interface{}, len(ss))
+	for i, v := range ss {
+		is[i] = v
+	}
+	return is
+}

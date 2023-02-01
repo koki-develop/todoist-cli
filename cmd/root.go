@@ -95,6 +95,11 @@ func init() {
 	flagFormat.Add(sectionsCmd.Commands()...)
 	flagFormat.Add(tasksCmd.Commands()...)
 
+	// --columns
+	flagColumnsProject.Add(projectsCmd.Commands()...)
+	flagColumnsSection.Add(sectionsCmd.Commands()...)
+	flagColumnsTask.Add(tasksCmd.Commands()...)
+
 	/*
 	 * project flags
 	 */

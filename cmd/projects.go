@@ -27,7 +27,7 @@ var projectsListCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(projs)
+		o, err := rdr.Render(projs, *flagColumnsProject.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -52,7 +52,7 @@ var projectsGetCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(proj)
+		o, err := rdr.Render(proj, *flagColumnsProject.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -85,7 +85,7 @@ var projectsCreateCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(proj)
+		o, err := rdr.Render(proj, *flagColumnsProject.Get(cmd, false))
 		if err != nil {
 			return err
 		}
@@ -117,7 +117,7 @@ var projectsUpdateCmd = &cobra.Command{
 			return err
 		}
 
-		o, err := rdr.Render(proj)
+		o, err := rdr.Render(proj, *flagColumnsProject.Get(cmd, false))
 		if err != nil {
 			return err
 		}
