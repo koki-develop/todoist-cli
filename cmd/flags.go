@@ -63,6 +63,11 @@ var (
 	flagColumnsTask = &flags.Strings{Flag: flagColumns,
 		Default: []string{"id", "content", "labels", "due"},
 	}
+
+	// comment
+	flagColumnsComment = &flags.Strings{Flag: flagColumns,
+		Default: []string{"id", "content", "attachment"},
+	}
 )
 
 // flags for projects update
@@ -289,5 +294,20 @@ var (
 	flagTasksUpdateAssigneeID = &flags.String{Flag: &flags.Flag{
 		Name:        "assignee-id",
 		Description: "the responsible user id",
+	}}
+)
+
+// flags for comments list
+var (
+	// --project-id
+	flagCommentsListProjectID = &flags.String{Flag: &flags.Flag{
+		Name:        "project-id",
+		Description: "id of the project used to filter comments",
+	}}
+
+	// --task-id
+	flagCommentsListTaskID = &flags.String{Flag: &flags.Flag{
+		Name:        "task-id",
+		Description: "id of the task used to filter comments",
 	}}
 )

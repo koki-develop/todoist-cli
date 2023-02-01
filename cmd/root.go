@@ -79,6 +79,12 @@ func init() {
 		tasksReopenCmd,
 	)
 
+	// comments
+	rootCmd.AddCommand(commentsCmd)
+	commentsCmd.AddCommand(
+		commentsListCmd,
+	)
+
 	/*
 	 * basic flags
 	 */
@@ -88,17 +94,20 @@ func init() {
 	flagAPIToken.Add(projectsCmd.Commands()...)
 	flagAPIToken.Add(sectionsCmd.Commands()...)
 	flagAPIToken.Add(tasksCmd.Commands()...)
+	flagAPIToken.Add(commentsCmd.Commands()...)
 
 	// -f, --format
 	flagFormat.Add(configureCmd)
 	flagFormat.Add(projectsCmd.Commands()...)
 	flagFormat.Add(sectionsCmd.Commands()...)
 	flagFormat.Add(tasksCmd.Commands()...)
+	flagFormat.Add(commentsCmd.Commands()...)
 
 	// --columns
 	flagColumnsProject.Add(projectsCmd.Commands()...)
 	flagColumnsSection.Add(sectionsCmd.Commands()...)
 	flagColumnsTask.Add(tasksCmd.Commands()...)
+	flagColumnsComment.Add(commentsCmd.Commands()...)
 
 	/*
 	 * project flags
@@ -164,4 +173,12 @@ func init() {
 	flagTasksUpdateDueDatetime.Add(tasksUpdateCmd)
 	flagTasksUpdateDueLang.Add(tasksUpdateCmd)
 	flagTasksUpdateAssigneeID.Add(tasksUpdateCmd)
+
+	/*
+	 * comment flags
+	 */
+
+	// list
+	flagCommentsListProjectID.Add(commentsListCmd)
+	flagCommentsListTaskID.Add(commentsListCmd)
 }
