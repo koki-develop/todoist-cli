@@ -8,9 +8,10 @@ import (
 )
 
 var sectionsCmd = &cobra.Command{
-	Use:   "sections",
-	Short: "Manage sections",
-	Long:  "Manage sections.",
+	Use:     "sections",
+	Aliases: []string{"sections", "s"},
+	Short:   "Manage sections",
+	Long:    "Manage sections.",
 }
 
 var sectionsListCmd = &cobra.Command{

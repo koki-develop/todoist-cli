@@ -8,9 +8,10 @@ import (
 )
 
 var tasksCmd = &cobra.Command{
-	Use:   "tasks",
-	Short: "Manage tasks",
-	Long:  "Manage tasks.",
+	Use:     "tasks",
+	Aliases: []string{"task", "t"},
+	Short:   "Manage tasks",
+	Long:    "Manage tasks.",
 }
 
 var tasksListCmd = &cobra.Command{

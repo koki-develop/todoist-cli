@@ -8,9 +8,10 @@ import (
 )
 
 var projectsCmd = &cobra.Command{
-	Use:   "projects",
-	Short: "Manage projects",
-	Long:  "Manage projects.",
+	Use:     "projects",
+	Aliases: []string{"project", "p"},
+	Short:   "Manage projects",
+	Long:    "Manage projects.",
 }
 
 var projectsListCmd = &cobra.Command{
