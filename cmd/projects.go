@@ -17,6 +17,7 @@ var projectsListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all projects",
 	Long:  "List all projects.",
+	Args:  cobra.MaximumNArgs(0),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := load(cmd); err != nil {
 			return err

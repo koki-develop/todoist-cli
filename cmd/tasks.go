@@ -17,6 +17,7 @@ var tasksListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List all active tasks",
 	Long:  "List all active tasks.",
+	Args:  cobra.MaximumNArgs(0),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := load(cmd); err != nil {
 			return err
