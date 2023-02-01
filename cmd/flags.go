@@ -56,12 +56,12 @@ var (
 
 	// section
 	flagColumnsSection = &flags.Strings{Flag: flagColumns,
-		Default: []string{"id", "name", "project_id"},
+		Default: []string{"id", "name"},
 	}
 
 	// task
 	flagColumnsTask = &flags.Strings{Flag: flagColumns,
-		Default: []string{"id", "content", "labels", "project_id", "section_id"},
+		Default: []string{"id", "content", "labels", "due"},
 	}
 )
 
