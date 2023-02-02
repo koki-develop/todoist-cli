@@ -30,7 +30,7 @@ func (cl *Client) ListTasks(p *ListTasksParameters) (models.Tasks, error) {
 	return ts, nil
 }
 
-func (cl *Client) GetTask(id string) (*models.Task, error) {
+func (cl *Client) GetTask(id string) (models.Task, error) {
 	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("tasks/%s", id), nil, nil)
 	if err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func (cl *Client) GetTask(id string) (*models.Task, error) {
 		return nil, err
 	}
 
-	return &t, nil
+	return t, nil
 }
 
 type CreateTaskParameters struct {
@@ -60,7 +60,7 @@ type CreateTaskParameters struct {
 	AssigneeID  *string   `json:"assignee_id,omitempty"`
 }
 
-func (cl *Client) CreateTask(p *CreateTaskParameters) (*models.Task, error) {
+func (cl *Client) CreateTask(p *CreateTaskParameters) (models.Task, error) {
 	req, err := cl.newRequest(http.MethodPost, "tasks", nil, p)
 	if err != nil {
 		return nil, err
@@ -71,7 +71,7 @@ func (cl *Client) CreateTask(p *CreateTaskParameters) (*models.Task, error) {
 		return nil, err
 	}
 
-	return &t, nil
+	return t, nil
 }
 
 type UpdateTaskParameters struct {
@@ -86,7 +86,7 @@ type UpdateTaskParameters struct {
 	AssigneeID  *string   `json:"assignee_id,omitempty"`
 }
 
-func (cl *Client) UpdateTask(id string, p *UpdateTaskParameters) (*models.Task, error) {
+func (cl *Client) UpdateTask(id string, p *UpdateTaskParameters) (models.Task, error) {
 	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("tasks/%s", id), nil, p)
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func (cl *Client) UpdateTask(id string, p *UpdateTaskParameters) (*models.Task, 
 		return nil, err
 	}
 
-	return &t, nil
+	return t, nil
 }
 
 func (cl *Client) DeleteTask(id string) error {

@@ -25,7 +25,7 @@ func (cl *Client) ListSections(p *ListSectionsParameters) (models.Sections, erro
 	return secs, nil
 }
 
-func (cl *Client) GetSection(id string) (*models.Section, error) {
+func (cl *Client) GetSection(id string) (models.Section, error) {
 	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("sections/%s", id), nil, nil)
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (cl *Client) GetSection(id string) (*models.Section, error) {
 		return nil, err
 	}
 
-	return &sec, nil
+	return sec, nil
 }
 
 type CreateSectionParameters struct {
@@ -45,7 +45,7 @@ type CreateSectionParameters struct {
 	Order     *int   `json:"order,omitempty"`
 }
 
-func (cl *Client) CreateSection(p *CreateSectionParameters) (*models.Section, error) {
+func (cl *Client) CreateSection(p *CreateSectionParameters) (models.Section, error) {
 	req, err := cl.newRequest(http.MethodPost, "sections", nil, p)
 	if err != nil {
 		return nil, err
@@ -56,14 +56,14 @@ func (cl *Client) CreateSection(p *CreateSectionParameters) (*models.Section, er
 		return nil, err
 	}
 
-	return &sec, nil
+	return sec, nil
 }
 
 type UpdateSectionParameters struct {
 	Name string `json:"name"`
 }
 
-func (cl *Client) UpdateSection(id string, p *UpdateSectionParameters) (*models.Section, error) {
+func (cl *Client) UpdateSection(id string, p *UpdateSectionParameters) (models.Section, error) {
 	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("sections/%s", id), nil, p)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (cl *Client) UpdateSection(id string, p *UpdateSectionParameters) (*models.
 		return nil, err
 	}
 
-	return &sec, nil
+	return sec, nil
 }
 
 func (cl *Client) DeleteSection(id string) error {

@@ -21,7 +21,7 @@ func (cl *Client) ListProjects() (models.Projects, error) {
 	return projs, nil
 }
 
-func (cl *Client) GetProject(id string) (*models.Project, error) {
+func (cl *Client) GetProject(id string) (models.Project, error) {
 	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("projects/%s", id), nil, nil)
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func (cl *Client) GetProject(id string) (*models.Project, error) {
 		return nil, err
 	}
 
-	return &proj, nil
+	return proj, nil
 }
 
 type CreateProjectParameters struct {
@@ -43,7 +43,7 @@ type CreateProjectParameters struct {
 	ViewStyle  *string `json:"view_style,omitempty"`
 }
 
-func (cl *Client) CreateProject(p *CreateProjectParameters) (*models.Project, error) {
+func (cl *Client) CreateProject(p *CreateProjectParameters) (models.Project, error) {
 	req, err := cl.newRequest(http.MethodPost, "projects", nil, p)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,7 @@ func (cl *Client) CreateProject(p *CreateProjectParameters) (*models.Project, er
 		return nil, err
 	}
 
-	return &proj, nil
+	return proj, nil
 }
 
 type UpdateProjectParameters struct {
@@ -64,7 +64,7 @@ type UpdateProjectParameters struct {
 	ViewStyle  *string `json:"view_style,omitempty"`
 }
 
-func (cl *Client) UpdateProject(id string, p *UpdateProjectParameters) (*models.Project, error) {
+func (cl *Client) UpdateProject(id string, p *UpdateProjectParameters) (models.Project, error) {
 	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("projects/%s", id), nil, p)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (cl *Client) UpdateProject(id string, p *UpdateProjectParameters) (*models.
 		return nil, err
 	}
 
-	return &proj, nil
+	return proj, nil
 }
 
 func (cl *Client) DeleteProject(id string) error {
