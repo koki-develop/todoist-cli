@@ -41,3 +41,29 @@ var commentsListCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var commentsGetCmd = &cobra.Command{
+	Use:   "get COMMENT_ID",
+	Short: "Get a comment",
+	Long:  "Get a comment.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		c, err := client.GetComment(id)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(c, *flagColumnsComment.Get(cmd, false))
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}

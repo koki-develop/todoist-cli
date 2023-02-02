@@ -1,6 +1,7 @@
 package todoistapi
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/koki-develop/todoist-cli/pkg/models"
@@ -23,4 +24,18 @@ func (cl *Client) ListComments(p *ListCommentsParameters) (models.Comments, erro
 	}
 
 	return cs, nil
+}
+
+func (cl *Client) GetComment(id string) (models.Comment, error) {
+	req, err := cl.newRequest(http.MethodGet, fmt.Sprintf("comments/%s", id), nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var c models.Comment
+	if err := cl.doRequest(req, &c); err != nil {
+		return nil, err
+	}
+
+	return c, nil
 }
