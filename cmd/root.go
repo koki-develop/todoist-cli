@@ -89,6 +89,12 @@ func init() {
 		commentsDeleteCmd,
 	)
 
+	// labels
+	rootCmd.AddCommand(labelsCmd)
+	labelsCmd.AddCommand(
+		labelsListCmd,
+	)
+
 	/*
 	 * basic flags
 	 */
@@ -99,6 +105,7 @@ func init() {
 	flagAPIToken.Add(sectionsCmd.Commands()...)
 	flagAPIToken.Add(tasksCmd.Commands()...)
 	flagAPIToken.Add(commentsCmd.Commands()...)
+	flagAPIToken.Add(labelsCmd.Commands()...)
 
 	// -f, --format
 	flagFormat.Add(configureCmd)
@@ -106,12 +113,14 @@ func init() {
 	flagFormat.Add(sectionsCmd.Commands()...)
 	flagFormat.Add(tasksCmd.Commands()...)
 	flagFormat.Add(commentsCmd.Commands()...)
+	flagFormat.Add(labelsCmd.Commands()...)
 
 	// --columns
 	flagColumnsProject.Add(projectsCmd.Commands()...)
 	flagColumnsSection.Add(sectionsCmd.Commands()...)
 	flagColumnsTask.Add(tasksCmd.Commands()...)
 	flagColumnsComment.Add(commentsCmd.Commands()...)
+	flagColumnsLabel.Add(labelsCmd.Commands()...)
 
 	/*
 	 * project flags

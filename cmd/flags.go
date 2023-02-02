@@ -68,6 +68,11 @@ var (
 	flagColumnsComment = &flags.Strings{Flag: flagColumns,
 		Default: []string{"id", "content", "attachment"},
 	}
+
+	// label
+	flagColumnsLabel = &flags.Strings{Flag: flagColumns,
+		Default: []string{"id", "name"},
+	}
 )
 
 // flags for projects update
