@@ -86,6 +86,7 @@ func init() {
 		commentsGetCmd,
 		commentsCreateCmd,
 		commentsUpdateCmd,
+		commentsDeleteCmd,
 	)
 
 	/*

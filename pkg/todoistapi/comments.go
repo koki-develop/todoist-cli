@@ -84,3 +84,16 @@ func (cl *Client) UpdateComment(id string, p *UpdateCommentParameters) (models.C
 
 	return c, nil
 }
+
+func (cl *Client) DeleteComment(id string) error {
+	req, err := cl.newRequest(http.MethodDelete, fmt.Sprintf("comments/%s", id), nil, nil)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}

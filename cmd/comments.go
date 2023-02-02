@@ -139,3 +139,23 @@ var commentsUpdateCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var commentsDeleteCmd = &cobra.Command{
+	Use:   "delete COMMENT_ID",
+	Short: "Delete a comment",
+	Long:  "Delete a comment.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		if err := client.DeleteComment(id); err != nil {
+			return err
+		}
+
+		return nil
+	},
+}
