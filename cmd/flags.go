@@ -344,3 +344,13 @@ var (
 		Description: "MIME type",
 	}}
 )
+
+// flags for comments update
+var (
+	// --content
+	flagCommentsUpdateContent = &flags.String{Flag: &flags.Flag{
+		Name:        "content",
+		Description: "new content for the comment",
+		Required:    true,
+	}}
+)

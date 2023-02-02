@@ -85,6 +85,7 @@ func init() {
 		commentsListCmd,
 		commentsGetCmd,
 		commentsCreateCmd,
+		commentsUpdateCmd,
 	)
 
 	/*
@@ -190,4 +191,7 @@ func init() {
 	flagCommentsCreateFileName.Add(commentsCreateCmd)
 	flagCommentsCreateFileURL.Add(commentsCreateCmd)
 	flagCommentsCreateFileType.Add(commentsCreateCmd)
+
+	// update
+	flagCommentsUpdateContent.Add(commentsUpdateCmd)
 }

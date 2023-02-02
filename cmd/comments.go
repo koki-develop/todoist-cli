@@ -110,3 +110,32 @@ var commentsCreateCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var commentsUpdateCmd = &cobra.Command{
+	Use:   "update COMMENT_ID",
+	Short: "Update a comment",
+	Long:  "Update a comment.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		p := &todoistapi.UpdateCommentParameters{
+			Content: flagCommentsUpdateContent.Get(cmd, false),
+		}
+		c, err := client.UpdateComment(id, p)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(c, *flagColumnsComment.Get(cmd, false))
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}

@@ -66,3 +66,21 @@ func (cl *Client) CreateComment(p *CreateCommentParameters) (models.Comment, err
 
 	return c, nil
 }
+
+type UpdateCommentParameters struct {
+	Content *string
+}
+
+func (cl *Client) UpdateComment(id string, p *UpdateCommentParameters) (models.Comment, error) {
+	req, err := cl.newRequest(http.MethodPost, fmt.Sprintf("comments/%s", id), nil, p)
+	if err != nil {
+		return nil, err
+	}
+
+	var c models.Comment
+	if err := cl.doRequest(req, &c); err != nil {
+		return nil, err
+	}
+
+	return c, nil
+}
