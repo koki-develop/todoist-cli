@@ -95,3 +95,35 @@ var labelsCreateCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var labelsUpdateCmd = &cobra.Command{
+	Use:   "update LABEL_ID",
+	Short: "Update a label",
+	Long:  "Update a label.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		p := &todoistapi.UpdateLabelParameters{
+			Name:       flagLabelsUpdateName.Get(cmd, true),
+			Order:      flagLabelsUpdateOrder.Get(cmd, true),
+			Color:      flagLabelsUpdateColor.Get(cmd, true),
+			IsFavorite: flagLabelsUpdateFavorite.Get(cmd, true),
+		}
+		l, err := client.UpdateLabel(id, p)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(l, *flagColumnsLabel.Get(cmd, false))
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}

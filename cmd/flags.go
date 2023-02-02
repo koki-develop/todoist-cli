@@ -380,3 +380,30 @@ var (
 		Description: "whether the label is a favorite",
 	}}
 )
+
+// flags for labels update
+var (
+	// --name
+	flagLabelsUpdateName = &flags.String{Flag: &flags.Flag{
+		Name:        "name",
+		Description: "new name of the label",
+	}}
+
+	// --order
+	flagLabelsUpdateOrder = &flags.Int{Flag: &flags.Flag{
+		Name:        "order",
+		Description: "number that is used to sort list of labels",
+	}}
+
+	// --color
+	flagLabelsUpdateColor = &flags.String{Flag: &flags.Flag{
+		Name:        "color",
+		Description: "the color of the label icon",
+	}}
+
+	// --favorite
+	flagLabelsUpdateFavorite = &flags.Bool{Flag: &flags.Flag{
+		Name:        "favorite",
+		Description: "whether the label is a favorite",
+	}}
+)

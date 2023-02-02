@@ -95,6 +95,7 @@ func init() {
 		labelsListCmd,
 		labelsGetCmd,
 		labelsCreateCmd,
+		labelsUpdateCmd,
 	)
 
 	/*
@@ -215,4 +216,10 @@ func init() {
 	flagLabelsCreateOrder.Add(labelsCreateCmd)
 	flagLabelsCreateColor.Add(labelsCreateCmd)
 	flagLabelsCreateFavorite.Add(labelsCreateCmd)
+
+	// update
+	flagLabelsUpdateName.Add(labelsUpdateCmd)
+	flagLabelsUpdateOrder.Add(labelsUpdateCmd)
+	flagLabelsUpdateColor.Add(labelsUpdateCmd)
+	flagLabelsUpdateFavorite.Add(labelsUpdateCmd)
 }
