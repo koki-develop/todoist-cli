@@ -311,3 +311,36 @@ var (
 		Description: "id of the task used to filter comments",
 	}}
 )
+
+// flags for comments create
+var (
+	// --task-id
+	flagCommentsCreateTaskID = &flags.String{Flag: &flags.Flag{
+		Name:        "task-id",
+		Description: "comment's task id",
+	}}
+
+	// --project-id
+	flagCommentsCreateProjectID = &flags.String{Flag: &flags.Flag{
+		Name:        "project-id",
+		Description: "comment's project id",
+	}}
+
+	// --file-name
+	flagCommentsCreateFileName = &flags.String{Flag: &flags.Flag{
+		Name:        "file-name",
+		Description: "the file name to be uploaded",
+	}}
+
+	// --file-url
+	flagCommentsCreateFileURL = &flags.String{Flag: &flags.Flag{
+		Name:        "file-url",
+		Description: "the url where the file is located",
+	}}
+
+	// --file-type
+	flagCommentsCreateFileType = &flags.String{Flag: &flags.Flag{
+		Name:        "file-type",
+		Description: "MIME type",
+	}}
+)

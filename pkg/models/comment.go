@@ -25,7 +25,12 @@ func (c Comment) attachment() string {
 		return ""
 	}
 
-	return a["file_name"].(string)
+	fn, ok := a["file_name"].(string)
+	if !ok {
+		return ""
+	}
+
+	return fn
 }
 
 func (cs Comments) Maps() []map[string]interface{} {

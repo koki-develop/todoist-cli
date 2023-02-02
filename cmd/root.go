@@ -84,6 +84,7 @@ func init() {
 	commentsCmd.AddCommand(
 		commentsListCmd,
 		commentsGetCmd,
+		commentsCreateCmd,
 	)
 
 	/*
@@ -182,4 +183,11 @@ func init() {
 	// list
 	flagCommentsListProjectID.Add(commentsListCmd)
 	flagCommentsListTaskID.Add(commentsListCmd)
+
+	// create
+	flagCommentsCreateTaskID.Add(commentsCreateCmd)
+	flagCommentsCreateProjectID.Add(commentsCreateCmd)
+	flagCommentsCreateFileName.Add(commentsCreateCmd)
+	flagCommentsCreateFileURL.Add(commentsCreateCmd)
+	flagCommentsCreateFileType.Add(commentsCreateCmd)
 }

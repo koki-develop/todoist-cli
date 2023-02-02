@@ -39,3 +39,30 @@ func (cl *Client) GetComment(id string) (models.Comment, error) {
 
 	return c, nil
 }
+
+type CreateCommentParameters struct {
+	TaskID     *string                  `json:"task_id,omitempty"`
+	ProjectID  *string                  `json:"project_id,omitempty"`
+	Content    *string                  `json:"content,omitempty"`
+	Attachment *CreateCommentAttachment `json:"attachment,omitempty"`
+}
+
+type CreateCommentAttachment struct {
+	FileName *string `json:"file_name,omitempty"`
+	FileURL  *string `json:"file_url,omitempty"`
+	FileType *string `json:"file_type,omitempty"`
+}
+
+func (cl *Client) CreateComment(p *CreateCommentParameters) (models.Comment, error) {
+	req, err := cl.newRequest(http.MethodPost, "comments", nil, p)
+	if err != nil {
+		return nil, err
+	}
+
+	var c models.Comment
+	if err := cl.doRequest(req, &c); err != nil {
+		return nil, err
+	}
+
+	return c, nil
+}

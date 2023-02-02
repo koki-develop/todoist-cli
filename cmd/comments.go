@@ -67,3 +67,46 @@ var commentsGetCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var commentsCreateCmd = &cobra.Command{
+	Use:   "create CONTENT",
+	Short: "Create a comment",
+	Long:  "Create a comment.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		content := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		var a *todoistapi.CreateCommentAttachment = nil
+		fn := flagCommentsCreateFileName.Get(cmd, true)
+		fu := flagCommentsCreateFileURL.Get(cmd, true)
+		ft := flagCommentsCreateFileType.Get(cmd, true)
+		if fn != nil || fu != nil || ft != nil {
+			a = &todoistapi.CreateCommentAttachment{
+				FileName: fn,
+				FileURL:  fu,
+				FileType: ft,
+			}
+		}
+		p := &todoistapi.CreateCommentParameters{
+			TaskID:     flagCommentsCreateTaskID.Get(cmd, true),
+			ProjectID:  flagCommentsCreateProjectID.Get(cmd, true),
+			Content:    &content,
+			Attachment: a,
+		}
+		c, err := client.CreateComment(p)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(c, *flagColumnsComment.Get(cmd, false))
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}
