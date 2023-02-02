@@ -93,6 +93,7 @@ func init() {
 	rootCmd.AddCommand(labelsCmd)
 	labelsCmd.AddCommand(
 		labelsListCmd,
+		labelsGetCmd,
 	)
 
 	/*
