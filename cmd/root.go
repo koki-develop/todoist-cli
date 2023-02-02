@@ -96,6 +96,7 @@ func init() {
 		labelsGetCmd,
 		labelsCreateCmd,
 		labelsUpdateCmd,
+		labelsDeleteCmd,
 	)
 
 	/*

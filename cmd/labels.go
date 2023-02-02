@@ -127,3 +127,23 @@ var labelsUpdateCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var labelsDeleteCmd = &cobra.Command{
+	Use:   "delete LABEL_ID",
+	Short: "Delete a label",
+	Long:  "Delete a label.",
+	Args:  cobra.MatchAll(cobra.MinimumNArgs(1), cobra.MaximumNArgs(1)),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id := args[0]
+
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		if err := client.DeleteLabel(id); err != nil {
+			return err
+		}
+
+		return nil
+	},
+}

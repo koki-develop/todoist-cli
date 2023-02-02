@@ -76,3 +76,16 @@ func (cl *Client) UpdateLabel(id string, p *UpdateLabelParameters) (models.Label
 
 	return l, nil
 }
+
+func (cl *Client) DeleteLabel(id string) error {
+	req, err := cl.newRequest(http.MethodDelete, fmt.Sprintf("labels/%s", id), nil, nil)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}
