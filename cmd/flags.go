@@ -359,3 +359,24 @@ var (
 		Required:    true,
 	}}
 )
+
+// flags for labels create
+var (
+	// --order
+	flagLabelsCreateOrder = &flags.Int{Flag: &flags.Flag{
+		Name:        "order",
+		Description: "label order",
+	}}
+
+	// --color
+	flagLabelsCreateColor = &flags.String{Flag: &flags.Flag{
+		Name:        "color",
+		Description: "the color of the label icon",
+	}}
+
+	// --favorite
+	flagLabelsCreateFavorite = &flags.Bool{Flag: &flags.Flag{
+		Name:        "favorite",
+		Description: "whether the label is a favorite",
+	}}
+)

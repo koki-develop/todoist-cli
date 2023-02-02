@@ -94,6 +94,7 @@ func init() {
 	labelsCmd.AddCommand(
 		labelsListCmd,
 		labelsGetCmd,
+		labelsCreateCmd,
 	)
 
 	/*
@@ -205,4 +206,13 @@ func init() {
 
 	// update
 	flagCommentsUpdateContent.Add(commentsUpdateCmd)
+
+	/*
+	 * label flags
+	 */
+
+	// create
+	flagLabelsCreateOrder.Add(labelsCreateCmd)
+	flagLabelsCreateColor.Add(labelsCreateCmd)
+	flagLabelsCreateFavorite.Add(labelsCreateCmd)
 }
