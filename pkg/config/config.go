@@ -6,14 +6,13 @@ import (
 	"path"
 
 	"github.com/koki-develop/todoist-cli/pkg/renderer"
+	"github.com/koki-develop/todoist-cli/pkg/util"
 )
 
 type Config struct {
 	APIToken *string          `json:"api_token,omitempty"`
 	Format   *renderer.Format `json:"format,omitempty"`
 }
-
-func format(f renderer.Format) *renderer.Format { return &f }
 
 func Load(def *Config) (*Config, error) {
 	dir, err := Dir()
@@ -41,7 +40,7 @@ func Load(def *Config) (*Config, error) {
 		}
 	}
 	if cfg.Format == nil {
-		cfg.Format = format(renderer.FormatTable)
+		cfg.Format = util.Ptr(renderer.FormatTable)
 	}
 
 	return cfg, nil

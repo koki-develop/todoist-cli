@@ -36,7 +36,7 @@ func (cl *Client) GetProject(id string) (models.Project, error) {
 }
 
 type CreateProjectParameters struct {
-	Name       string  `json:"name"`
+	Name       *string `json:"name,omitempty"`
 	ParentID   *string `json:"parent_id,omitempty"`
 	Color      *string `json:"color,omitempty"`
 	IsFavorite *bool   `json:"is_favorite,omitempty"`

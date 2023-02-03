@@ -4,6 +4,18 @@ on:
   push:
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: test
+        run: go test ./... -race -coverprofile=coverage.out -covermode=atomic
+      - uses: codecov/codecov-action@v3
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -14,8 +26,16 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
-      - name: test
-        run: go test ./...
       - uses: goreleaser/goreleaser-action@v4
         with:
           args: release --rm-dist --snapshot
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: go.mod
+          cache: true
+      - uses: golangci/golangci-lint-action@v3

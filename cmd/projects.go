@@ -76,7 +76,7 @@ var projectsCreateCmd = &cobra.Command{
 		}
 
 		p := &todoistapi.CreateProjectParameters{
-			Name:       name,
+			Name:       &name,
 			ParentID:   flagProjectsCreateParentID.Get(cmd, true),
 			IsFavorite: flagProjectsCreateFavorite.Get(cmd, true),
 			Color:      flagProjectsCreateColor.Get(cmd, true),
