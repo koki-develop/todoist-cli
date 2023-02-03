@@ -107,3 +107,38 @@ func (cl *Client) ListSharedLabels(p *ListSharedLabelsParameters) (models.Shared
 
 	return ls, nil
 }
+
+type RenameSharedLabelParameters struct {
+	Name    *string `json:"name,omitempty"`
+	NewName *string `json:"new_name,omitempty"`
+}
+
+func (cl *Client) RenameSharedLabel(p *RenameSharedLabelParameters) error {
+	req, err := cl.newRequest(http.MethodPost, "labels/shared/rename", nil, p)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+type RemoveSharedLabelParameters struct {
+	Name *string `json:"name,omitempty"`
+}
+
+func (cl *Client) RemoveSharedLabel(p *RemoveSharedLabelParameters) error {
+	req, err := cl.newRequest(http.MethodPost, "labels/shared/remove", nil, p)
+	if err != nil {
+		return err
+	}
+
+	if err := cl.doRequest(req, nil); err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -421,3 +421,13 @@ var (
 		Description: "whether to exclude the names of the user's personal labels",
 	}}
 )
+
+// flags for shared-labels rename
+var (
+	// --new-name
+	flagSharedLabelsRenameNewName = &flags.String{Flag: &flags.Flag{
+		Name:        "new-name",
+		Description: "the new name for the label",
+		Required:    true,
+	}}
+)

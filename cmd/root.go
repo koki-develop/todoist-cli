@@ -103,6 +103,8 @@ func init() {
 	rootCmd.AddCommand(sharedLabelsCmd)
 	sharedLabelsCmd.AddCommand(
 		sharedLabelsListCmd,
+		sharedLabelsRenameCmd,
+		sharedLabelsRemoveCmd,
 	)
 
 	/*
@@ -239,4 +241,7 @@ func init() {
 
 	// list
 	flagSharedLabelsListOmitPersonal.Add(sharedLabelsListCmd)
+
+	// rename
+	flagSharedLabelsRenameNewName.Add(sharedLabelsRenameCmd)
 }
