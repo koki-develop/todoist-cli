@@ -27,6 +27,18 @@ func TestClient_ListProjects(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			resp:    "ERROR_RESPONSE",
+			status:  400,
+			want:    nil,
+			wantErr: true,
+		},
+		{
+			resp:    "ERROR_RESPONSE",
+			status:  500,
+			want:    nil,
+			wantErr: true,
+		},
 	}
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("#%d", i), func(t *testing.T) {
@@ -42,14 +54,14 @@ func TestClient_ListProjects(t *testing.T) {
 					},
 				},
 				Response: &mockHTTPConfigResponse{
-					Status: 200,
+					Status: tt.status,
 					Body:   tt.resp,
 				},
 			})
 
 			got, err := cl.ListProjects()
 			if tt.wantErr {
-				assert.Error(t, err)
+				assert.EqualError(t, err, tt.resp)
 			} else {
 				assert.NoError(t, err)
 			}
