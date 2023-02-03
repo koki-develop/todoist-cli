@@ -288,3 +288,45 @@ func TestClient_UpdateProject(t *testing.T) {
 		})
 	}
 }
+
+func TestClient_DeleteProject(t *testing.T) {
+	tests := []struct {
+		id      string
+		resp    string
+		status  int
+		wantErr bool
+	}{
+		{
+			id:      "1",
+			status:  204,
+			wantErr: false,
+		},
+	}
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("#%d", i), func(t *testing.T) {
+			cl, m := newClientWithMock(t)
+
+			m.mockHTTP(t, &mockHTTPConfig{
+				Request: &mockHTTPConfigRequest{
+					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/projects/%s", tt.id),
+					Method: http.MethodDelete,
+					Headers: map[string]string{
+						"Authorization": "Bearer TODOIST_API_TOKEN",
+						"Content-Type":  "application/json",
+					},
+				},
+				Response: &mockHTTPConfigResponse{
+					Status: tt.status,
+					Body:   tt.resp,
+				},
+			})
+
+			err := cl.DeleteProject(tt.id)
+			if tt.wantErr {
+				assert.EqualError(t, err, tt.resp)
+			} else {
+				assert.NoError(t, err)
+			}
+		})
+	}
+}
