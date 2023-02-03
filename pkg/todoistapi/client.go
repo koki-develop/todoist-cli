@@ -14,8 +14,8 @@ import (
 )
 
 type Client struct {
-	token      string
-	httpClient *http.Client
+	token   string
+	httpAPI httpAPI
 }
 
 type Config struct {
@@ -24,8 +24,8 @@ type Config struct {
 
 func New(cfg *Config) *Client {
 	return &Client{
-		token:      cfg.Token,
-		httpClient: new(http.Client),
+		token:   cfg.Token,
+		httpAPI: new(http.Client),
 	}
 }
 
@@ -60,7 +60,7 @@ func (cl *Client) newRequest(method, pathname string, params, body interface{}) 
 }
 
 func (cl *Client) doRequest(req *http.Request, dst interface{}) error {
-	resp, err := cl.httpClient.Do(req)
+	resp, err := cl.httpAPI.Do(req)
 	if err != nil {
 		return err
 	}
