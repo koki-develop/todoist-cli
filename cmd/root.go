@@ -99,6 +99,12 @@ func init() {
 		labelsDeleteCmd,
 	)
 
+	// shared-labels
+	rootCmd.AddCommand(sharedLabelsCmd)
+	sharedLabelsCmd.AddCommand(
+		sharedLabelsListCmd,
+	)
+
 	/*
 	 * basic flags
 	 */
@@ -110,6 +116,7 @@ func init() {
 	flagAPIToken.Add(tasksCmd.Commands()...)
 	flagAPIToken.Add(commentsCmd.Commands()...)
 	flagAPIToken.Add(labelsCmd.Commands()...)
+	flagAPIToken.Add(sharedLabelsCmd.Commands()...)
 
 	// -f, --format
 	flagFormat.Add(configureCmd)
@@ -118,6 +125,7 @@ func init() {
 	flagFormat.Add(tasksCmd.Commands()...)
 	flagFormat.Add(commentsCmd.Commands()...)
 	flagFormat.Add(labelsCmd.Commands()...)
+	flagFormat.Add(sharedLabelsCmd.Commands()...)
 
 	// --columns
 	flagColumnsProject.Add(projectsCmd.Commands()...)
@@ -125,6 +133,7 @@ func init() {
 	flagColumnsTask.Add(tasksCmd.Commands()...)
 	flagColumnsComment.Add(commentsCmd.Commands()...)
 	flagColumnsLabel.Add(labelsCmd.Commands()...)
+	flagColumnsSharedLabel.Add(sharedLabelsCmd.Commands()...)
 
 	/*
 	 * project flags
@@ -223,4 +232,11 @@ func init() {
 	flagLabelsUpdateOrder.Add(labelsUpdateCmd)
 	flagLabelsUpdateColor.Add(labelsUpdateCmd)
 	flagLabelsUpdateFavorite.Add(labelsUpdateCmd)
+
+	/*
+	 * shared label flags
+	 */
+
+	// list
+	flagSharedLabelsListOmitPersonal.Add(sharedLabelsListCmd)
 }

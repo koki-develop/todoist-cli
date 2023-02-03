@@ -89,3 +89,21 @@ func (cl *Client) DeleteLabel(id string) error {
 
 	return nil
 }
+
+type ListSharedLabelsParameters struct {
+	OmitPersonal *bool `url:"omit_personal,omitempty"`
+}
+
+func (cl *Client) ListSharedLabels(p *ListSharedLabelsParameters) (models.SharedLabels, error) {
+	req, err := cl.newRequest(http.MethodGet, "labels/shared", p, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var ls models.SharedLabels
+	if err := cl.doRequest(req, &ls); err != nil {
+		return nil, err
+	}
+
+	return ls, nil
+}

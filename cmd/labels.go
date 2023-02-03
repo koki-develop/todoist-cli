@@ -147,3 +147,37 @@ var labelsDeleteCmd = &cobra.Command{
 		return nil
 	},
 }
+
+var sharedLabelsCmd = &cobra.Command{
+	Use:     "shared-labels",
+	Aliases: []string{"shared-label"},
+	Short:   "Manage shared labels",
+	Long:    "Manage shared labels.",
+}
+
+var sharedLabelsListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List all shared labels",
+	Long:  "List all shared labels.",
+	Args:  cobra.MaximumNArgs(0),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if err := load(cmd); err != nil {
+			return err
+		}
+
+		p := &todoistapi.ListSharedLabelsParameters{
+			OmitPersonal: flagSharedLabelsListOmitPersonal.Get(cmd, true),
+		}
+		ls, err := client.ListSharedLabels(p)
+		if err != nil {
+			return err
+		}
+
+		o, err := rdr.Render(ls, *flagColumnsSharedLabel.Get(cmd, false))
+		if err != nil {
+			return err
+		}
+		fmt.Println(o)
+		return nil
+	},
+}

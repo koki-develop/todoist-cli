@@ -73,6 +73,11 @@ var (
 	flagColumnsLabel = &flags.Strings{Flag: flagColumns,
 		Default: []string{"id", "name"},
 	}
+
+	// shared label
+	flagColumnsSharedLabel = &flags.Strings{Flag: flagColumns,
+		Default: []string{"name"},
+	}
 )
 
 // flags for projects update
@@ -405,5 +410,14 @@ var (
 	flagLabelsUpdateFavorite = &flags.Bool{Flag: &flags.Flag{
 		Name:        "favorite",
 		Description: "whether the label is a favorite",
+	}}
+)
+
+// flags for shared-labels list
+var (
+	// --omit-personal
+	flagSharedLabelsListOmitPersonal = &flags.Bool{Flag: &flags.Flag{
+		Name:        "omit-personal",
+		Description: "whether to exclude the names of the user's personal labels",
 	}}
 )
