@@ -141,3 +141,64 @@ func TestClient_GetSection(t *testing.T) {
 		})
 	}
 }
+
+func TestClient_CreateSection(t *testing.T) {
+	tests := []struct {
+		p           *CreateSectionParameters
+		expectedReq string
+		resp        string
+		status      int
+		want        models.Section
+		wantErr     bool
+	}{
+		{
+			p:           &CreateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
+			resp:        `{"id": "1", "name": "SECTION"}`,
+			status:      201,
+			want:        models.Section{"id": "1", "name": "SECTION"},
+			wantErr:     false,
+		},
+		{
+			p: &CreateSectionParameters{
+				Name:      util.Ptr("SECTION"),
+				ProjectID: util.Ptr("PROJECT_ID"),
+				Order:     util.Ptr(0),
+			},
+			expectedReq: `{"name":"SECTION","project_id":"PROJECT_ID","order":0}`,
+			resp:        `{"id": "1", "name": "SECTION"}`,
+			status:      201,
+			want:        models.Section{"id": "1", "name": "SECTION"},
+			wantErr:     false,
+		},
+	}
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("#%d", i), func(t *testing.T) {
+			cl, m := newClientWithMock(t)
+
+			m.mockHTTP(t, &mockHTTPConfig{
+				Request: &mockHTTPConfigRequest{
+					URL:    "https://api.todoist.com/rest/v2/sections",
+					Method: http.MethodPost,
+					Body:   tt.expectedReq,
+					Headers: map[string]string{
+						"Authorization": "Bearer TODOIST_API_TOKEN",
+						"Content-Type":  "application/json",
+					},
+				},
+				Response: &mockHTTPConfigResponse{
+					Status: tt.status,
+					Body:   tt.resp,
+				},
+			})
+
+			got, err := cl.CreateSection(tt.p)
+			if tt.wantErr {
+				assert.EqualError(t, err, tt.resp)
+			} else {
+				assert.NoError(t, err)
+			}
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

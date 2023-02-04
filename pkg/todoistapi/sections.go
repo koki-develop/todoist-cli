@@ -40,9 +40,9 @@ func (cl *Client) GetSection(id string) (models.Section, error) {
 }
 
 type CreateSectionParameters struct {
-	Name      string `json:"name"`
-	ProjectID string `json:"project_id"`
-	Order     *int   `json:"order,omitempty"`
+	Name      *string `json:"name,omitempty"`
+	ProjectID *string `json:"project_id,omitempty"`
+	Order     *int    `json:"order,omitempty"`
 }
 
 func (cl *Client) CreateSection(p *CreateSectionParameters) (models.Section, error) {
