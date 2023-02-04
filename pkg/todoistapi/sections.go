@@ -60,7 +60,7 @@ func (cl *Client) CreateSection(p *CreateSectionParameters) (models.Section, err
 }
 
 type UpdateSectionParameters struct {
-	Name string `json:"name"`
+	Name *string `json:"name,omitempty"`
 }
 
 func (cl *Client) UpdateSection(id string, p *UpdateSectionParameters) (models.Section, error) {

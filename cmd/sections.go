@@ -111,7 +111,7 @@ var sectionsUpdateCmd = &cobra.Command{
 		}
 
 		p := &todoistapi.UpdateSectionParameters{
-			Name: *flagSectionsUpdateName.Get(cmd, false),
+			Name: flagSectionsUpdateName.Get(cmd, false),
 		}
 		sec, err := client.UpdateSection(id, p)
 		if err != nil {
