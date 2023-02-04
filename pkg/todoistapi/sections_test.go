@@ -10,34 +10,46 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestClient_ListProjects(t *testing.T) {
+func TestClient_ListSections(t *testing.T) {
 	tests := []struct {
-		resp    string
-		status  int
-		want    models.Projects
-		wantErr bool
+		p           *ListSectionsParameters
+		expectedURL string
+		resp        string
+		status      int
+		want        models.Sections
+		wantErr     bool
 	}{
 		{
-			resp:   `[{"id": "1", "name": "PROJECT_1"}, {"id": "2", "name": "PROJECT_2"}, {"id": "3", "name": "PROJECT_3"}]`,
-			status: http.StatusOK,
-			want: models.Projects{
-				{"id": "1", "name": "PROJECT_1"},
-				{"id": "2", "name": "PROJECT_2"},
-				{"id": "3", "name": "PROJECT_3"},
-			},
-			wantErr: false,
+			p:           &ListSectionsParameters{},
+			expectedURL: "https://api.todoist.com/rest/v2/sections",
+			resp:        `[{"id": "1", "name": "SECTION_1"}, {"id": "2", "name": "SECTION_2"}, {"id": "3", "name": "SECTION_3"}]`,
+			status:      http.StatusOK,
+			want:        models.Sections{{"id": "1", "name": "SECTION_1"}, {"id": "2", "name": "SECTION_2"}, {"id": "3", "name": "SECTION_3"}},
+			wantErr:     false,
 		},
 		{
-			resp:    "ERROR_RESPONSE",
-			status:  http.StatusBadRequest,
-			want:    nil,
-			wantErr: true,
+			p:           &ListSectionsParameters{ProjectID: util.Ptr("PROJECT_ID")},
+			expectedURL: "https://api.todoist.com/rest/v2/sections?project_id=PROJECT_ID",
+			resp:        `[{"id": "1", "name": "SECTION_1"}, {"id": "2", "name": "SECTION_2"}, {"id": "3", "name": "SECTION_3"}]`,
+			status:      http.StatusOK,
+			want:        models.Sections{{"id": "1", "name": "SECTION_1"}, {"id": "2", "name": "SECTION_2"}, {"id": "3", "name": "SECTION_3"}},
+			wantErr:     false,
 		},
 		{
-			resp:    "ERROR_RESPONSE",
-			status:  http.StatusInternalServerError,
-			want:    nil,
-			wantErr: true,
+			p:           &ListSectionsParameters{},
+			expectedURL: "https://api.todoist.com/rest/v2/sections",
+			resp:        "ERROR_RESPONSE",
+			status:      http.StatusBadRequest,
+			want:        nil,
+			wantErr:     true,
+		},
+		{
+			p:           &ListSectionsParameters{},
+			expectedURL: "https://api.todoist.com/rest/v2/sections",
+			resp:        "ERROR_RESPONSE",
+			status:      http.StatusInternalServerError,
+			want:        nil,
+			wantErr:     true,
 		},
 	}
 	for i, tt := range tests {
@@ -46,7 +58,7 @@ func TestClient_ListProjects(t *testing.T) {
 
 			m.mockHTTP(t, &mockHTTPConfig{
 				Request: &mockHTTPConfigRequest{
-					URL:    "https://api.todoist.com/rest/v2/projects",
+					URL:    tt.expectedURL,
 					Method: http.MethodGet,
 					Headers: map[string]string{
 						"Authorization": "Bearer TODOIST_API_TOKEN",
@@ -59,7 +71,7 @@ func TestClient_ListProjects(t *testing.T) {
 				},
 			})
 
-			got, err := cl.ListProjects()
+			got, err := cl.ListSections(tt.p)
 			if tt.wantErr {
 				assert.EqualError(t, err, tt.resp)
 			} else {
@@ -70,19 +82,19 @@ func TestClient_ListProjects(t *testing.T) {
 	}
 }
 
-func TestClient_GetProject(t *testing.T) {
+func TestClient_GetSection(t *testing.T) {
 	tests := []struct {
 		id      string
 		resp    string
 		status  int
-		want    models.Project
+		want    models.Section
 		wantErr bool
 	}{
 		{
 			id:      "1",
-			resp:    `{"id": "1", "name": "PROJECT"}`,
+			resp:    `{"id": "1", "name": "SECTION"}`,
 			status:  http.StatusOK,
-			want:    models.Project{"id": "1", "name": "PROJECT"},
+			want:    models.Section{"id": "1", "name": "SECTION"},
 			wantErr: false,
 		},
 		{
@@ -106,7 +118,7 @@ func TestClient_GetProject(t *testing.T) {
 
 			m.mockHTTP(t, &mockHTTPConfig{
 				Request: &mockHTTPConfigRequest{
-					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/projects/%s", tt.id),
+					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/sections/%s", tt.id),
 					Method: http.MethodGet,
 					Headers: map[string]string{
 						"Authorization": "Bearer TODOIST_API_TOKEN",
@@ -119,83 +131,7 @@ func TestClient_GetProject(t *testing.T) {
 				},
 			})
 
-			proj, err := cl.GetProject(tt.id)
-			if tt.wantErr {
-				assert.EqualError(t, err, tt.resp)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.want, proj)
-		})
-	}
-}
-
-func TestClient_CreateProject(t *testing.T) {
-	tests := []struct {
-		p           *CreateProjectParameters
-		expectedReq string
-		resp        string
-		status      int
-		want        models.Project
-		wantErr     bool
-	}{
-		{
-			p:           &CreateProjectParameters{Name: util.Ptr("PROJECT")},
-			expectedReq: `{"name":"PROJECT"}`,
-			resp:        `{"id": "1", "name": "PROJECT"}`,
-			status:      http.StatusCreated,
-			want:        models.Project{"id": "1", "name": "PROJECT"},
-			wantErr:     false,
-		},
-		{
-			p: &CreateProjectParameters{
-				Name:       util.Ptr("PROJECT"),
-				ParentID:   util.Ptr("PARENT_ID"),
-				Color:      util.Ptr("COLOR"),
-				IsFavorite: util.Ptr(false),
-				ViewStyle:  util.Ptr("VIEW_STYLE"),
-			},
-			expectedReq: `{"name":"PROJECT","parent_id":"PARENT_ID","color":"COLOR","is_favorite":false,"view_style":"VIEW_STYLE"}`,
-			resp:        `{"id": "1", "name": "PROJECT"}`,
-			status:      http.StatusCreated,
-			want:        models.Project{"id": "1", "name": "PROJECT"},
-			wantErr:     false,
-		},
-		{
-			p:           &CreateProjectParameters{Name: util.Ptr("PROJECT")},
-			expectedReq: `{"name":"PROJECT"}`,
-			resp:        "ERROR_RESPONSE",
-			status:      http.StatusBadRequest,
-			want:        nil,
-			wantErr:     true,
-		},
-		{
-			p:           &CreateProjectParameters{Name: util.Ptr("PROJECT")},
-			expectedReq: `{"name":"PROJECT"}`,
-			resp:        "ERROR_RESPONSE",
-			status:      http.StatusInternalServerError,
-			want:        nil,
-			wantErr:     true,
-		},
-	}
-	for i, tt := range tests {
-		t.Run(fmt.Sprintf("#%d", i), func(t *testing.T) {
-			cl, m := newClientWithMock(t)
-
-			m.mockHTTP(t, &mockHTTPConfig{
-				Request: &mockHTTPConfigRequest{
-					URL:    "https://api.todoist.com/rest/v2/projects",
-					Method: http.MethodPost,
-					Body:   tt.expectedReq,
-					Headers: map[string]string{
-						"Authorization": "Bearer TODOIST_API_TOKEN",
-						"Content-Type":  "application/json",
-					},
-				},
-				Response: &mockHTTPConfigResponse{Status: tt.status, Body: tt.resp},
-			})
-
-			got, err := cl.CreateProject(tt.p)
+			got, err := cl.GetSection(tt.id)
 			if tt.wantErr {
 				assert.EqualError(t, err, tt.resp)
 			} else {
@@ -206,52 +142,46 @@ func TestClient_CreateProject(t *testing.T) {
 	}
 }
 
-func TestClient_UpdateProject(t *testing.T) {
+func TestClient_CreateSection(t *testing.T) {
 	tests := []struct {
-		id          string
-		p           *UpdateProjectParameters
+		p           *CreateSectionParameters
 		expectedReq string
 		resp        string
 		status      int
-		want        models.Project
+		want        models.Section
 		wantErr     bool
 	}{
 		{
-			id:          "1",
-			p:           &UpdateProjectParameters{Name: util.Ptr("NAME")},
-			expectedReq: `{"name":"NAME"}`,
-			resp:        `{"id": "1", "name": "NAME"}`,
-			status:      http.StatusOK,
-			want:        models.Project{"id": "1", "name": "NAME"},
+			p:           &CreateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
+			resp:        `{"id": "1", "name": "SECTION"}`,
+			status:      http.StatusCreated,
+			want:        models.Section{"id": "1", "name": "SECTION"},
 			wantErr:     false,
 		},
 		{
-			id: "1",
-			p: &UpdateProjectParameters{
-				Name:       util.Ptr("NAME"),
-				Color:      util.Ptr("COLOR"),
-				IsFavorite: util.Ptr(false),
-				ViewStyle:  util.Ptr("VIEW_STYLE"),
+			p: &CreateSectionParameters{
+				Name:      util.Ptr("SECTION"),
+				ProjectID: util.Ptr("PROJECT_ID"),
+				Order:     util.Ptr(0),
 			},
-			expectedReq: `{"name":"NAME","color":"COLOR","is_favorite":false,"view_style":"VIEW_STYLE"}`,
-			resp:        `{"id": "1", "name": "NAME"}`,
-			status:      http.StatusOK,
-			want:        models.Project{"id": "1", "name": "NAME"},
+			expectedReq: `{"name":"SECTION","project_id":"PROJECT_ID","order":0}`,
+			resp:        `{"id": "1", "name": "SECTION"}`,
+			status:      http.StatusCreated,
+			want:        models.Section{"id": "1", "name": "SECTION"},
 			wantErr:     false,
 		},
 		{
-			id:          "1",
-			p:           &UpdateProjectParameters{Name: util.Ptr("NAME")},
-			expectedReq: `{"name":"NAME"}`,
+			p:           &CreateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
 			resp:        "ERROR_RESPONSE",
 			status:      http.StatusBadRequest,
 			want:        nil,
 			wantErr:     true,
 		},
 		{
-			id:          "1",
-			p:           &UpdateProjectParameters{Name: util.Ptr("NAME")},
-			expectedReq: `{"name":"NAME"}`,
+			p:           &CreateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
 			resp:        "ERROR_RESPONSE",
 			status:      http.StatusInternalServerError,
 			want:        nil,
@@ -264,7 +194,7 @@ func TestClient_UpdateProject(t *testing.T) {
 
 			m.mockHTTP(t, &mockHTTPConfig{
 				Request: &mockHTTPConfigRequest{
-					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/projects/%s", tt.id),
+					URL:    "https://api.todoist.com/rest/v2/sections",
 					Method: http.MethodPost,
 					Body:   tt.expectedReq,
 					Headers: map[string]string{
@@ -278,7 +208,7 @@ func TestClient_UpdateProject(t *testing.T) {
 				},
 			})
 
-			got, err := cl.UpdateProject(tt.id, tt.p)
+			got, err := cl.CreateSection(tt.p)
 			if tt.wantErr {
 				assert.EqualError(t, err, tt.resp)
 			} else {
@@ -289,7 +219,76 @@ func TestClient_UpdateProject(t *testing.T) {
 	}
 }
 
-func TestClient_DeleteProject(t *testing.T) {
+func TestClient_UpdateSection(t *testing.T) {
+	tests := []struct {
+		id          string
+		p           *UpdateSectionParameters
+		expectedReq string
+		resp        string
+		status      int
+		want        models.Section
+		wantErr     bool
+	}{
+		{
+			id:          "1",
+			p:           &UpdateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
+			resp:        `{"id": "1", "name": "SECTION"}`,
+			status:      http.StatusOK,
+			want:        models.Section{"id": "1", "name": "SECTION"},
+			wantErr:     false,
+		},
+		{
+			id:          "1",
+			p:           &UpdateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
+			resp:        "ERROR_RESPONSE",
+			status:      http.StatusBadRequest,
+			want:        nil,
+			wantErr:     true,
+		},
+		{
+			id:          "1",
+			p:           &UpdateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
+			resp:        "ERROR_RESPONSE",
+			status:      http.StatusInternalServerError,
+			want:        nil,
+			wantErr:     true,
+		},
+	}
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("#%d", i), func(t *testing.T) {
+			cl, m := newClientWithMock(t)
+
+			m.mockHTTP(t, &mockHTTPConfig{
+				Request: &mockHTTPConfigRequest{
+					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/sections/%s", tt.id),
+					Method: http.MethodPost,
+					Body:   tt.expectedReq,
+					Headers: map[string]string{
+						"Authorization": "Bearer TODOIST_API_TOKEN",
+						"Content-Type":  "application/json",
+					},
+				},
+				Response: &mockHTTPConfigResponse{
+					Status: tt.status,
+					Body:   tt.resp,
+				},
+			})
+
+			got, err := cl.UpdateSection(tt.id, tt.p)
+			if tt.wantErr {
+				assert.EqualError(t, err, tt.resp)
+			} else {
+				assert.NoError(t, err)
+			}
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+func TestClient_DeleteSection(t *testing.T) {
 	tests := []struct {
 		id      string
 		resp    string
@@ -320,7 +319,7 @@ func TestClient_DeleteProject(t *testing.T) {
 
 			m.mockHTTP(t, &mockHTTPConfig{
 				Request: &mockHTTPConfigRequest{
-					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/projects/%s", tt.id),
+					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/sections/%s", tt.id),
 					Method: http.MethodDelete,
 					Headers: map[string]string{
 						"Authorization": "Bearer TODOIST_API_TOKEN",
@@ -333,7 +332,7 @@ func TestClient_DeleteProject(t *testing.T) {
 				},
 			})
 
-			err := cl.DeleteProject(tt.id)
+			err := cl.DeleteSection(tt.id)
 			if tt.wantErr {
 				assert.EqualError(t, err, tt.resp)
 			} else {

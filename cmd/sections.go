@@ -80,8 +80,8 @@ var sectionsCreateCmd = &cobra.Command{
 		}
 
 		p := &todoistapi.CreateSectionParameters{
-			Name:      name,
-			ProjectID: *flagSectionsCreateProjectID.Get(cmd, false),
+			Name:      &name,
+			ProjectID: flagSectionsCreateProjectID.Get(cmd, false),
 			Order:     flagSectionsCreateOrder.Get(cmd, true),
 		}
 		sec, err := client.CreateSection(p)
@@ -111,7 +111,7 @@ var sectionsUpdateCmd = &cobra.Command{
 		}
 
 		p := &todoistapi.UpdateSectionParameters{
-			Name: *flagSectionsUpdateName.Get(cmd, false),
+			Name: flagSectionsUpdateName.Get(cmd, false),
 		}
 		sec, err := client.UpdateSection(id, p)
 		if err != nil {
