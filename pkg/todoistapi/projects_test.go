@@ -132,20 +132,20 @@ func TestClient_GetProject(t *testing.T) {
 
 func TestClient_CreateProject(t *testing.T) {
 	tests := []struct {
-		p       *CreateProjectParameters
-		req     string
-		resp    string
-		status  int
-		want    models.Project
-		wantErr bool
+		p           *CreateProjectParameters
+		expectedReq string
+		resp        string
+		status      int
+		want        models.Project
+		wantErr     bool
 	}{
 		{
-			p:       &CreateProjectParameters{Name: util.Ptr("PROJECT")},
-			req:     `{"name":"PROJECT"}`,
-			resp:    `{"id": "1", "name": "PROJECT"}`,
-			status:  201,
-			want:    models.Project{"id": "1", "name": "PROJECT"},
-			wantErr: false,
+			p:           &CreateProjectParameters{Name: util.Ptr("PROJECT")},
+			expectedReq: `{"name":"PROJECT"}`,
+			resp:        `{"id": "1", "name": "PROJECT"}`,
+			status:      201,
+			want:        models.Project{"id": "1", "name": "PROJECT"},
+			wantErr:     false,
 		},
 		{
 			p: &CreateProjectParameters{
@@ -155,27 +155,27 @@ func TestClient_CreateProject(t *testing.T) {
 				IsFavorite: util.Ptr(false),
 				ViewStyle:  util.Ptr("VIEW_STYLE"),
 			},
-			req:     `{"name":"PROJECT","parent_id":"PARENT_ID","color":"COLOR","is_favorite":false,"view_style":"VIEW_STYLE"}`,
-			resp:    `{"id": "1", "name": "PROJECT"}`,
-			status:  201,
-			want:    models.Project{"id": "1", "name": "PROJECT"},
-			wantErr: false,
+			expectedReq: `{"name":"PROJECT","parent_id":"PARENT_ID","color":"COLOR","is_favorite":false,"view_style":"VIEW_STYLE"}`,
+			resp:        `{"id": "1", "name": "PROJECT"}`,
+			status:      201,
+			want:        models.Project{"id": "1", "name": "PROJECT"},
+			wantErr:     false,
 		},
 		{
-			p:       &CreateProjectParameters{Name: util.Ptr("PROJECT")},
-			req:     `{"name":"PROJECT"}`,
-			resp:    "ERROR_RESPONSE",
-			status:  400,
-			want:    nil,
-			wantErr: true,
+			p:           &CreateProjectParameters{Name: util.Ptr("PROJECT")},
+			expectedReq: `{"name":"PROJECT"}`,
+			resp:        "ERROR_RESPONSE",
+			status:      400,
+			want:        nil,
+			wantErr:     true,
 		},
 		{
-			p:       &CreateProjectParameters{Name: util.Ptr("PROJECT")},
-			req:     `{"name":"PROJECT"}`,
-			resp:    "ERROR_RESPONSE",
-			status:  500,
-			want:    nil,
-			wantErr: true,
+			p:           &CreateProjectParameters{Name: util.Ptr("PROJECT")},
+			expectedReq: `{"name":"PROJECT"}`,
+			resp:        "ERROR_RESPONSE",
+			status:      500,
+			want:        nil,
+			wantErr:     true,
 		},
 	}
 	for i, tt := range tests {
@@ -186,7 +186,7 @@ func TestClient_CreateProject(t *testing.T) {
 				Request: &mockHTTPConfigRequest{
 					URL:    "https://api.todoist.com/rest/v2/projects",
 					Method: http.MethodPost,
-					Body:   tt.req,
+					Body:   tt.expectedReq,
 					Headers: map[string]string{
 						"Authorization": "Bearer TODOIST_API_TOKEN",
 						"Content-Type":  "application/json",
@@ -208,22 +208,22 @@ func TestClient_CreateProject(t *testing.T) {
 
 func TestClient_UpdateProject(t *testing.T) {
 	tests := []struct {
-		id      string
-		p       *UpdateProjectParameters
-		req     string
-		resp    string
-		status  int
-		want    models.Project
-		wantErr bool
+		id          string
+		p           *UpdateProjectParameters
+		expectedReq string
+		resp        string
+		status      int
+		want        models.Project
+		wantErr     bool
 	}{
 		{
-			id:      "1",
-			p:       &UpdateProjectParameters{Name: util.Ptr("NAME")},
-			req:     `{"name":"NAME"}`,
-			resp:    `{"id": "1", "name": "NAME"}`,
-			status:  200,
-			want:    models.Project{"id": "1", "name": "NAME"},
-			wantErr: false,
+			id:          "1",
+			p:           &UpdateProjectParameters{Name: util.Ptr("NAME")},
+			expectedReq: `{"name":"NAME"}`,
+			resp:        `{"id": "1", "name": "NAME"}`,
+			status:      200,
+			want:        models.Project{"id": "1", "name": "NAME"},
+			wantErr:     false,
 		},
 		{
 			id: "1",
@@ -233,29 +233,29 @@ func TestClient_UpdateProject(t *testing.T) {
 				IsFavorite: util.Ptr(false),
 				ViewStyle:  util.Ptr("VIEW_STYLE"),
 			},
-			req:     `{"name":"NAME","color":"COLOR","is_favorite":false,"view_style":"VIEW_STYLE"}`,
-			resp:    `{"id": "1", "name": "NAME"}`,
-			status:  200,
-			want:    models.Project{"id": "1", "name": "NAME"},
-			wantErr: false,
+			expectedReq: `{"name":"NAME","color":"COLOR","is_favorite":false,"view_style":"VIEW_STYLE"}`,
+			resp:        `{"id": "1", "name": "NAME"}`,
+			status:      200,
+			want:        models.Project{"id": "1", "name": "NAME"},
+			wantErr:     false,
 		},
 		{
-			id:      "1",
-			p:       &UpdateProjectParameters{Name: util.Ptr("NAME")},
-			req:     `{"name":"NAME"}`,
-			resp:    "ERROR_RESPONSE",
-			status:  400,
-			want:    nil,
-			wantErr: true,
+			id:          "1",
+			p:           &UpdateProjectParameters{Name: util.Ptr("NAME")},
+			expectedReq: `{"name":"NAME"}`,
+			resp:        "ERROR_RESPONSE",
+			status:      400,
+			want:        nil,
+			wantErr:     true,
 		},
 		{
-			id:      "1",
-			p:       &UpdateProjectParameters{Name: util.Ptr("NAME")},
-			req:     `{"name":"NAME"}`,
-			resp:    "ERROR_RESPONSE",
-			status:  500,
-			want:    nil,
-			wantErr: true,
+			id:          "1",
+			p:           &UpdateProjectParameters{Name: util.Ptr("NAME")},
+			expectedReq: `{"name":"NAME"}`,
+			resp:        "ERROR_RESPONSE",
+			status:      500,
+			want:        nil,
+			wantErr:     true,
 		},
 	}
 	for i, tt := range tests {
@@ -266,7 +266,7 @@ func TestClient_UpdateProject(t *testing.T) {
 				Request: &mockHTTPConfigRequest{
 					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/projects/%s", tt.id),
 					Method: http.MethodPost,
-					Body:   tt.req,
+					Body:   tt.expectedReq,
 					Headers: map[string]string{
 						"Authorization": "Bearer TODOIST_API_TOKEN",
 						"Content-Type":  "application/json",
