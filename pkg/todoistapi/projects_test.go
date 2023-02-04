@@ -301,6 +301,18 @@ func TestClient_DeleteProject(t *testing.T) {
 			status:  204,
 			wantErr: false,
 		},
+		{
+			id:      "1",
+			resp:    "ERROR_RESPONSE",
+			status:  400,
+			wantErr: true,
+		},
+		{
+			id:      "1",
+			resp:    "ERROR_RESPONSE",
+			status:  500,
+			wantErr: true,
+		},
 	}
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("#%d", i), func(t *testing.T) {
