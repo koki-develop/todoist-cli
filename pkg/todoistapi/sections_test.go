@@ -271,3 +271,57 @@ func TestClient_UpdateSection(t *testing.T) {
 		})
 	}
 }
+
+func TestClient_DeleteSection(t *testing.T) {
+	tests := []struct {
+		id      string
+		resp    string
+		status  int
+		wantErr bool
+	}{
+		{
+			id:      "1",
+			status:  http.StatusNoContent,
+			wantErr: false,
+		},
+		{
+			id:      "1",
+			resp:    "ERROR_RESPONSE",
+			status:  http.StatusBadRequest,
+			wantErr: true,
+		},
+		{
+			id:      "1",
+			resp:    "ERROR_RESPONSE",
+			status:  http.StatusInternalServerError,
+			wantErr: true,
+		},
+	}
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("#%d", i), func(t *testing.T) {
+			cl, m := newClientWithMock(t)
+
+			m.mockHTTP(t, &mockHTTPConfig{
+				Request: &mockHTTPConfigRequest{
+					URL:    fmt.Sprintf("https://api.todoist.com/rest/v2/sections/%s", tt.id),
+					Method: http.MethodDelete,
+					Headers: map[string]string{
+						"Authorization": "Bearer TODOIST_API_TOKEN",
+						"Content-Type":  "application/json",
+					},
+				},
+				Response: &mockHTTPConfigResponse{
+					Status: tt.status,
+					Body:   tt.resp,
+				},
+			})
+
+			err := cl.DeleteSection(tt.id)
+			if tt.wantErr {
+				assert.EqualError(t, err, tt.resp)
+			} else {
+				assert.NoError(t, err)
+			}
+		})
+	}
+}
