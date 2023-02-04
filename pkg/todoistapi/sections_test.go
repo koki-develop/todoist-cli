@@ -171,6 +171,22 @@ func TestClient_CreateSection(t *testing.T) {
 			want:        models.Section{"id": "1", "name": "SECTION"},
 			wantErr:     false,
 		},
+		{
+			p:           &CreateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
+			resp:        "ERROR_RESPONSE",
+			status:      http.StatusBadRequest,
+			want:        nil,
+			wantErr:     true,
+		},
+		{
+			p:           &CreateSectionParameters{Name: util.Ptr("SECTION")},
+			expectedReq: `{"name":"SECTION"}`,
+			resp:        "ERROR_RESPONSE",
+			status:      http.StatusInternalServerError,
+			want:        nil,
+			wantErr:     true,
+		},
 	}
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("#%d", i), func(t *testing.T) {
